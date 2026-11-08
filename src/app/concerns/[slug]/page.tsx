@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getCollectionPage, listingFromParams } from '@/lib/shopify/catalog';
-import { CONCERNS, CONCERN_PREFIX, CONTACT, FORMS, breadcrumbLd, concernBySlug } from '@/lib/site';
-import { stripHtml, titleCase } from '@/lib/format';
+import { listingFromParams } from '@/lib/shopify/catalog';
+import { applyListing, concernProducts } from '@/lib/concerns';
+import { CONCERNS, CONTACT, FORMS, breadcrumbLd, concernBySlug } from '@/lib/site';
 import { Crumbs } from '@/components/Crumbs';
 import { Listing } from '@/components/Listing';
 import { JsonLd } from '@/components/JsonLd';
@@ -13,46 +13,41 @@ type Props = { params: Promise<{ slug: string }>; searchParams: Promise<Record<s
 const formType = (slug: string) => FORMS.find((f) => f.slug === slug)?.type;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
-  const c = concernBySlug(slug);
-  const r = await getCollectionPage(CONCERN_PREFIX + slug, { first: 1 }).catch(() => null);
-  if (!c && !r) return { title: 'Not found' };
-  const name = c?.name ?? titleCase(r!.collection.title);
+  const c = concernBySlug((await params).slug);
+  if (!c) return { title: 'Not found' };
   return {
-    title: `${name}: Ayurveda medicines`,
-    description: r?.collection.seo.description || `${name}: Ayurveda medicines from AVVVS, Kozhikode, grouped by our pharmacists.`,
-    alternates: { canonical: `/concerns/${slug}` },
+    title: `${c.name}: Ayurveda medicines`,
+    description: `${c.name} (${c.note.toLowerCase()}): Ayurveda medicines from AVVVS, Kozhikode, grouped by our pharmacists.`,
+    alternates: { canonical: `/concerns/${c.slug}` },
   };
 }
 
 export default async function ConcernPage({ params, searchParams }: Props) {
   const { slug } = await params;
   const c = concernBySlug(slug);
+  if (!c) notFound();
   const listing = listingFromParams(await searchParams, formType);
-  const r = await getCollectionPage(CONCERN_PREFIX + slug, listing).catch(() => null);
-  if (!c && !r) notFound();
-  const name = c?.name ?? titleCase(r!.collection.title);
-  const lede = (r && stripHtml(r.collection.descriptionHtml)) || c?.note;
-  const filtered = !!(listing.inStock || listing.min || listing.max || listing.type);
-  const ready = !!r && (r.page.products.length > 0 || filtered);
+  const { products } = await concernProducts(slug);
+  const page = applyListing(products, listing);
 
   return (
     <div className="wrap">
       <header className="head" data-anim>
-        <Crumbs trail={[{ name: 'Shop by concern', href: '/concerns' }, { name }]} />
+        <Crumbs trail={[{ name: 'Shop by concern', href: '/concerns' }, { name: c.name }]} />
         <div className="head-row">
           <div style={{ display: 'grid', gap: 10 }}>
-            <h1>{name}</h1>
-            {lede && <p className="head-lede">{lede}</p>}
+            <h1>{c.name}</h1>
+            <p className="head-lede">{c.note}. Ayurveda medicines that AVVVS traditionally recommends in this area.</p>
           </div>
-          <a className="btn-quiet" href={CONTACT.clinic} rel="noopener"><DoctorIcon className="" /> Consult a doctor ↗</a>
+          <a className="btn-quiet" href={CONTACT.clinic} rel="noopener"><DoctorIcon className="" /> Consult a doctor <span className="arr" aria-hidden="true">↗</span></a>
         </div>
         <div className="caution" role="note">
-          <p>This group is a way to browse, not a diagnosis. Choose medicines with a doctor’s advice, especially for children, during pregnancy, or alongside other treatment.</p>
+          <p>This group is a way to browse, not a diagnosis. Please choose medicines with a doctor’s advice, especially for children, during pregnancy, or alongside other treatment.</p>
         </div>
       </header>
-      {ready ? (
-        <Listing name={name} initial={r!.page} filters={r!.page.filters} listing={listing} source={{ kind: 'collection', handle: CONCERN_PREFIX + slug }} showForms />
+      {products.length ? (
+        <Listing name={c.name} initial={page} filters={page.filters} listing={listing} source={{ kind: 'products' }} showForms
+          sorts={[{ value: 'featured', label: 'In stock first' }, { value: 'name', label: 'Name, A–Z' }, { value: 'price-asc', label: 'Price, low to high' }, { value: 'price-desc', label: 'Price, high to low' }]} />
       ) : (
         <div className="empty" style={{ paddingBottom: 100 }}>
           <h2>Coming soon</h2>
@@ -67,7 +62,7 @@ export default async function ConcernPage({ params, searchParams }: Props) {
         <p className="eyebrow" style={{ marginBottom: 12 }}>Other concerns</p>
         <div className="tags">{CONCERNS.filter((x) => x.slug !== slug).map((x) => <Link key={x.slug} href={`/concerns/${x.slug}`}>{x.name}</Link>)}</div>
       </nav>
-      <JsonLd data={breadcrumbLd([{ name: 'Shop by concern', path: '/concerns' }, { name, path: `/concerns/${slug}` }])} />
+      <JsonLd data={breadcrumbLd([{ name: 'Shop by concern', path: '/concerns' }, { name: c.name, path: `/concerns/${slug}` }])} />
     </div>
   );
 }

@@ -10,6 +10,7 @@ import { money, titleCase } from '@/lib/format';
 import { CONCERNS, FORMS, formByType } from '@/lib/site';
 import { trackSearch } from '@/lib/track';
 import { CloseIcon, SearchIcon } from './Icons';
+import { medicineName } from '@/content/medicines';
 
 const RECENT = 'avvvs-searches';
 const readRecent = (): string[] => { try { return JSON.parse(localStorage.getItem(RECENT) || '[]'); } catch { return []; } };
@@ -153,7 +154,7 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
                     <a className="search-opt" href={`/products/${p.handle}`} {...optProps(p.id)}
                       onClick={(e) => { e.preventDefault(); go(`/products/${p.handle}`, t); }}>
                       <span className="img">{p.featuredImage && <Image src={p.featuredImage.url} alt="" width={48} height={48} />}</span>
-                      <span>{titleCase(p.title)}<small>{formByType(p.productType)?.name ?? titleCase(p.productType)}{!p.availableForSale ? ' · out of stock' : ''}</small></span>
+                      <span>{medicineName(p.handle, p.title)}<small>{formByType(p.productType)?.name ?? titleCase(p.productType)}{!p.availableForSale ? ' · out of stock' : ''}</small></span>
                       <span className="pr">{money(p.priceRange.minVariantPrice, { compact: true })}</span>
                     </a>
                   </li>

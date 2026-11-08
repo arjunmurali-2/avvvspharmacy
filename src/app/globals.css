@@ -681,3 +681,11 @@ html.anim .split:not([data-in]) .split-w > span { transform: translateY(105%); }
 
 html.anim .split[data-anim]:not([data-in]) { opacity: 1; }
 html.anim [data-anim="line"]:not([data-in]) { opacity: 0; transform: scaleX(0); }
+
+/* product content: a short lede, then the traditional uses as a hairline list */
+.about { display: grid; gap: 12px; }
+.about-lede { font-size: clamp(1.04rem, 1rem + 0.25vw, 1.16rem); color: var(--ink-2); line-height: 1.55; }
+.uses { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 22px; border-top: 1px solid var(--line-soft); }
+.uses li { position: relative; padding: 9px 0 8px 18px; border-bottom: 1px solid var(--line-soft); font-size: 0.95rem; color: var(--ink); }
+.uses li::before { content: ""; position: absolute; left: 2px; top: 1.05em; width: 6px; height: 6px; border-radius: 50%; border: 1px solid var(--thread); }
+@media (max-width: 560px) { .uses { grid-template-columns: minmax(0, 1fr); } }

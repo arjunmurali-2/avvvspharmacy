@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { getCollections } from '@/lib/shopify/catalog';
 import { safe } from '@/lib/shopify/client';
-import { CONCERNS, CONCERN_PREFIX, CONTACT, breadcrumbLd } from '@/lib/site';
+import { concernCounts } from '@/lib/concerns';
+import { CONCERNS, CONTACT, breadcrumbLd } from '@/lib/site';
 import { Crumbs } from '@/components/Crumbs';
 import { JsonLd } from '@/components/JsonLd';
 
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Concerns() {
-  const live = new Set((await safe(getCollections(), [])).filter((c) => c.handle.startsWith(CONCERN_PREFIX) && c.count > 0).map((c) => c.handle.slice(CONCERN_PREFIX.length)));
+  const counts = await safe(concernCounts(), {} as Record<string, number>);
   return (
     <div className="wrap" style={{ paddingBottom: 90 }}>
       <header className="head" data-anim>
@@ -30,7 +30,7 @@ export default async function Concerns() {
               <b>{c.name}</b>
               <span className="go" aria-hidden="true">→</span>
               <small>{c.note}</small>
-              {!live.has(c.slug) && <span className="soon">Being prepared by our pharmacists</span>}
+              <span className="soon">{counts[c.slug] ? `${counts[c.slug]} medicine${counts[c.slug] === 1 ? '' : 's'}` : 'Being prepared by our pharmacists'}</span>
             </Link>
           </li>
         ))}

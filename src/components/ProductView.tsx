@@ -69,6 +69,9 @@ function Notify({ product }: { product: Product }) {
 
 function Share({ name }: { name: string }) {
   const [copied, setCopied] = useState(false);
+  // the page address is only known in the browser; fill it in after hydration
+  const [here, setHere] = useState('');
+  useEffect(() => setHere(window.location.href), []);
   const share = async () => {
     const url = window.location.href;
     if (navigator.share) { try { await navigator.share({ title: name, url }); return; } catch { /* cancelled */ } }
@@ -77,7 +80,7 @@ function Share({ name }: { name: string }) {
   return (
     <div className="share">
       <button type="button" onClick={share}>{copied ? 'Link copied' : 'Share'}</button>
-      <a href={`https://wa.me/?text=${encodeURIComponent(name)}%20${typeof window === 'undefined' ? '' : encodeURIComponent(window.location.href)}`} target="_blank" rel="noopener noreferrer">Send on WhatsApp</a>
+      <a href={`https://wa.me/?text=${encodeURIComponent(name)}%20${encodeURIComponent(here)}`} target="_blank" rel="noopener noreferrer">Send on WhatsApp</a>
       <button type="button" onClick={() => window.print()}><PrintIcon className="" /> Print</button>
     </div>
   );

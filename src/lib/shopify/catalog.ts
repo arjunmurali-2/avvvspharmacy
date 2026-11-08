@@ -9,7 +9,7 @@ const IMAGE = `fragment Img on Image { url altText width height }`;
 
 const CARD = `
 fragment Card on Product {
-  id handle title productType availableForSale
+  id handle title productType availableForSale tags
   featuredImage { ...Img }
   priceRange { minVariantPrice { amount currencyCode } }
   compareAtPriceRange { minVariantPrice { amount currencyCode } }

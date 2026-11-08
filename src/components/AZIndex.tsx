@@ -5,6 +5,7 @@ import { useMemo, useState } from 'react';
 import type { Money } from '@/lib/shopify/types';
 import { indexLetter, money, titleCase } from '@/lib/format';
 import { FORMS, formByType } from '@/lib/site';
+import { medicineName } from '@/content/medicines';
 
 type Row = { handle: string; title: string; type: string; available: boolean; price: Money };
 const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
@@ -22,6 +23,7 @@ export function AZIndex({ rows }: { rows: Row[] }) {
     const list = rows
       .filter((r) => !form || r.type === form)
       .filter((r) => !stock || r.available)
+      .map((r) => ({ ...r, title: medicineName(r.handle, r.title) }))
       .filter((r) => !lq || loose(r.title).includes(lq))
       .sort((a, b) => a.title.localeCompare(b.title));
     const m = new Map<string, Row[]>();
@@ -54,7 +56,7 @@ export function AZIndex({ rows }: { rows: Row[] }) {
             <ul>
               {list.map((r) => (
                 <li key={r.handle} className={r.available ? undefined : 'is-out'}>
-                  <Link href={`/products/${r.handle}`} prefetch={false}>{titleCase(r.title)}</Link>
+                  <Link href={`/products/${r.handle}`} prefetch={false}>{r.title}</Link>
                   <small>{formByType(r.type)?.name ?? titleCase(r.type)} · {r.available ? money(r.price, { compact: true }) : 'out of stock'}</small>
                 </li>
               ))}

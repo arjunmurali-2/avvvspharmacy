@@ -10,9 +10,10 @@ import { FREE_SHIPPING, formByType } from '@/lib/site';
 import { trackBeginCheckout, trackViewCart, type Item } from '@/lib/track';
 import { CloseIcon, RxIcon, UploadIcon } from './Icons';
 import { useStore } from './StoreProvider';
+import { medicineName } from '@/content/medicines';
 
 const items = (cart: Cart): Item[] => cart.lines.nodes.map((l) => ({
-  id: l.merchandise.id, name: titleCase(l.merchandise.product.title), price: amount(l.cost.amountPerQuantity), quantity: l.quantity,
+  id: l.merchandise.id, name: medicineName(l.merchandise.product.handle, l.merchandise.product.title), price: amount(l.cost.amountPerQuantity), quantity: l.quantity,
   category: formByType(l.merchandise.product.productType)?.name,
 }));
 
@@ -34,7 +35,7 @@ function Line({ line, onNavigate }: { line: CartLine; onNavigate?: () => void })
   const { update, remove } = useStore();
   const [busy, setBusy] = useState(false);
   const p = line.merchandise;
-  const name = titleCase(p.product.title);
+  const name = medicineName(p.product.handle, p.product.title);
   const was = line.cost.compareAtAmountPerQuantity;
   const act = async (fn: () => Promise<void>) => { setBusy(true); await fn(); setBusy(false); };
   return (

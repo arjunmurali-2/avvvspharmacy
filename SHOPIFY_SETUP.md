@@ -79,15 +79,22 @@ Under **Settings → Custom data → Products**, add these definitions. Use name
 
 A section appears on the product page only when its metafield has a value. **The store never writes medical information of its own.** Fill these in from AVVVS's approved product literature.
 
-## 4. Shop by concern
+## 4. Shop by concern (product tags)
 
-Each concern is a **smart collection**. Its products are added automatically when they carry a matching tag. For each row below, create a smart collection like this:
-- **Products → Collections → Create collection**, type *Automated*
-- **Condition:** *Product tag* is equal to the handle in the table
-- **URL handle:** set it to the same handle (edit it under *Search engine listing*)
-- **Title, description and image:** what customers see
+The store places medicines under the twelve concerns using **product tags** in Shopify:
+- A medicine tagged `concern-pain-management` appears under Pain management.
+- A medicine can carry several concern tags.
 
-| Collection handle and tag | Title on the store |
+**Until products are tagged.** The store uses a starting map worked out from AVVVS's own product descriptions (`src/content/concernMap.ts`). It switches to tags concern by concern: as soon as any product carries, say, `concern-skin-and-hair`, that concern is driven by tags alone.
+
+**To move the starting map into Shopify:**
+1. Have AVVVS's pharmacist review the map. It is also listed in `docs/CONTENT_MISTAKES.md`.
+2. Create a custom app with `read_products` and `write_products` scopes (**Settings → Apps → Develop apps**). Put its Admin API token in `.env.local` as `SHOPIFY_ADMIN_TOKEN`.
+3. Run `npm run tag-concerns` to see what would change, then `npm run tag-concerns -- --apply`. The script only adds tags; it never removes them.
+
+From then on, edit the tags in Shopify; no code change is needed.
+
+| Tag | Concern |
 |---|---|
 | `concern-pain-management` | Pain management |
 | `concern-digestive-health` | Digestive health |
@@ -101,8 +108,6 @@ Each concern is a **smart collection**. Its products are added automatically whe
 | `concern-liver-and-kidney` | Liver & kidney |
 | `concern-mind-sleep-nerves` | Mind, sleep & nerves |
 | `concern-rejuvenation` | Rejuvenation (Rasayana) |
-
-**AVVVS's pharmacists should decide which medicines get which tag.** Until a concern has products, its page shows "Coming soon" with a link to consult a doctor.
 
 ## 5. Webhooks (instant updates)
 

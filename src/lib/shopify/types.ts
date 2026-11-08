@@ -28,6 +28,7 @@ export type ProductCard = {
   title: string;
   productType: string;
   availableForSale: boolean;
+  tags: string[];
   featuredImage: Image | null;
   priceRange: { minVariantPrice: Money };
   compareAtPriceRange: { minVariantPrice: Money };
@@ -37,7 +38,6 @@ export type ProductCard = {
 export type Product = Omit<ProductCard, 'variants'> & {
   description: string;
   descriptionHtml: string;
-  tags: string[];
   vendor: string;
   updatedAt: string;
   seo: { title: string | null; description: string | null };

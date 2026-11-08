@@ -7,11 +7,12 @@ import type { ProductCard } from '@/lib/shopify/types';
 import { amount, money, titleCase } from '@/lib/format';
 import { formByType } from '@/lib/site';
 import { HeartIcon } from './Icons';
+import { medicineName } from '@/content/medicines';
 import { useStore } from './StoreProvider';
 
-export const itemOf = (p: Pick<ProductCard, 'title' | 'productType' | 'priceRange'> & { variants?: ProductCard['variants']; id: string }) => ({
+export const itemOf = (p: Pick<ProductCard, 'title' | 'productType' | 'priceRange' | 'handle'> & { variants?: ProductCard['variants']; id: string }) => ({
   id: p.variants?.nodes[0]?.id ?? p.id,
-  name: titleCase(p.title),
+  name: medicineName(p.handle, p.title),
   price: amount(p.priceRange.minVariantPrice),
   category: formByType(p.productType)?.name ?? p.productType,
 });
@@ -19,7 +20,7 @@ export const itemOf = (p: Pick<ProductCard, 'title' | 'productType' | 'priceRang
 export function WishButton({ product, inline }: { product: ProductCard; inline?: boolean }) {
   const { wishlist, toggleWish } = useStore();
   const on = wishlist.includes(product.handle);
-  const name = titleCase(product.title);
+  const name = medicineName(product.handle, product.title);
   return (
     <button type="button" className={`wish${inline ? ' wish-inline' : ''}`} aria-pressed={on}
       aria-label={on ? `Remove ${name} from your wishlist` : `Save ${name} to your wishlist`}
@@ -38,7 +39,7 @@ export function QuickAdd({ product }: { product: ProductCard }) {
   const { add } = useStore();
   const [state, setState] = useState<'idle' | 'adding' | 'done'>('idle');
   const v = product.variants.nodes[0];
-  const name = titleCase(product.title);
+  const name = medicineName(product.handle, product.title);
   if (!v || !product.availableForSale) {
     return <Link className="tile-add is-notify" href={`/products/${product.handle}#notify`} aria-label={`Notify me when ${name} is back`}><BellIcon /><span>Notify me</span></Link>;
   }
@@ -61,7 +62,7 @@ export function ProductTile({ product, priority }: { product: ProductCard; prior
   const price = product.priceRange.minVariantPrice;
   const was = product.compareAtPriceRange.minVariantPrice;
   const onSale = amount(was) > amount(price);
-  const name = titleCase(product.title);
+  const name = medicineName(product.handle, product.title);
   return (
     <article className={`tile${product.availableForSale ? '' : ' is-out'}`}>
       <Link href={`/products/${product.handle}`} className="tile-link" prefetch={false}>
