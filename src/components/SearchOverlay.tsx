@@ -56,6 +56,7 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
   const options: Opt[] = useMemo(() => {
     if (!res) return [];
     return [
+      ...(res.concerns ?? []).map((c) => ({ key: `k-${c.slug}`, href: `/concerns/${c.slug}`, label: c.name, kind: 'link' as const })),
       ...res.queries.slice(0, 4).map((q) => ({ key: `q-${q.text}`, href: `/search?q=${encodeURIComponent(q.text)}`, label: q.text, kind: 'query' as const })),
       ...res.products.map((p) => ({ key: p.id, href: `/products/${p.handle}`, label: p.title, kind: 'product' as const })),
       ...res.collections.map((c) => ({ key: `c-${c.handle}`, href: c.handle.startsWith('concern-') ? `/concerns/${c.handle.slice(8)}` : `/collections/${c.handle}`, label: c.title, kind: 'link' as const })),
@@ -129,6 +130,22 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
             </>
           )}
 
+          {res && (res.concerns?.length ?? 0) > 0 && (
+            <div className="search-group">
+              <h3>Shop by concern</h3>
+              <ul className="search-list">
+                {res.concerns!.map((c) => (
+                  <li key={c.slug}>
+                    <a className="search-opt q" href={`/concerns/${c.slug}`} {...optProps(`k-${c.slug}`)}
+                      onClick={(e) => { e.preventDefault(); go(`/concerns/${c.slug}`, t); }}>
+                      <span aria-hidden="true">→</span><span>{c.name}<small>{c.note}</small></span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           {res && res.queries.length > 0 && (
             <div className="search-group">
               <h3>Suggestions</h3>
@@ -154,7 +171,7 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
                     <a className="search-opt" href={`/products/${p.handle}`} {...optProps(p.id)}
                       onClick={(e) => { e.preventDefault(); go(`/products/${p.handle}`, t); }}>
                       <span className="img">{p.featuredImage && <Image src={p.featuredImage.url} alt="" width={48} height={48} />}</span>
-                      <span>{medicineName(p.handle, p.title)}<small>{formByType(p.productType)?.name ?? titleCase(p.productType)}{!p.availableForSale ? ' · out of stock' : ''}</small></span>
+                      <span>{medicineName(p.handle, p.title)}<small>{p.why ? `Traditional use: ${p.why}` : formByType(p.productType)?.name ?? titleCase(p.productType)}{!p.availableForSale ? ' · out of stock' : ''}</small></span>
                       <span className="pr">{money(p.priceRange.minVariantPrice, { compact: true })}</span>
                     </a>
                   </li>

@@ -130,6 +130,7 @@ export function Header() {
               <h2>Collections</h2>
               <ul>
                 {COLLECTIONS.map((c) => <li key={c.handle}><Link href={`/collections/${c.handle}`}>{c.name}<small>{c.note}</small></Link></li>)}
+                <li><Link href="/kits">Care kits<small>Put together by our pharmacists</small></Link></li>
                 <li><Link href="/medicines">Every medicine, A–Z<small>Find a medicine by name</small></Link></li>
               </ul>
             </div>

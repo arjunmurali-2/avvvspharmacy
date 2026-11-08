@@ -8,7 +8,8 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "tag-concerns": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/tag-concerns.mts",
-    "content-review": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/content-review.mts"
+    "content-review": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/content-review.mts",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@neondatabase/serverless": "1.2.0",
@@ -22,6 +23,7 @@
     "server-only": "^0.0.1"
   },
   "devDependencies": {
+    "@playwright/test": "1.65.0",
     "@types/node": "22.10.7",
     "@types/nodemailer": "8.0.2",
     "@types/react": "19.0.7",

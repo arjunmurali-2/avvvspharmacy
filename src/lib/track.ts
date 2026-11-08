@@ -39,3 +39,17 @@ export function trackBeginCheckout(items: Item[]) {
 }
 export function trackSearch(term: string) { ga('search', { search_term: term }); px('Search', { search_string: term }); }
 export function trackWishlist(i: Item) { ga('add_to_wishlist', { currency: 'INR', value: i.price, items: gaItems([i]) }); px('AddToWishlist', { content_ids: [i.id], value: i.price, currency: 'INR' }); }
+
+/**
+ * What checkout needs to join a purchase to this visit: the GA4 client id (from the _ga cookie,
+ * "GA1.1.123.456" → "123.456") and the visitor's cookie choice. Read only, never set here.
+ */
+export function checkoutTracking(): { gaClientId?: string; consent: string } {
+  let consent = 'none';
+  try {
+    const c = JSON.parse(localStorage.getItem('avvvs-consent') || 'null') as { analytics?: boolean; marketing?: boolean } | null;
+    if (c) consent = [c.analytics && 'analytics', c.marketing && 'marketing'].filter(Boolean).join(',') || 'none';
+  } catch { /* storage blocked */ }
+  const ga = document.cookie.match(/(?:^|; )_ga=GA\d\.\d\.(\d+\.\d+)/)?.[1];
+  return { gaClientId: consent.includes('analytics') ? ga : undefined, consent };
+}

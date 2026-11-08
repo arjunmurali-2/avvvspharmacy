@@ -102,7 +102,10 @@ export type Cart = {
 export type Page = { id: string; handle: string; title: string; body: string; bodySummary: string; updatedAt: string; seo: { title: string | null; description: string | null } };
 
 export type PredictiveResult = {
-  products: Pick<ProductCard, 'id' | 'handle' | 'title' | 'productType' | 'featuredImage' | 'priceRange' | 'availableForSale'>[];
+  /** `why`: the traditional use that matched a symptom search */
+  products: (Pick<ProductCard, 'id' | 'handle' | 'title' | 'productType' | 'featuredImage' | 'priceRange' | 'availableForSale'> & { why?: string })[];
   collections: { handle: string; title: string }[];
   queries: { text: string; styledText: string }[];
+  /** concern pages that match what was typed ("back pain" → Pain management) */
+  concerns?: { slug: string; name: string; note: string }[];
 };

@@ -109,6 +109,26 @@ From then on, edit the tags in Shopify; no code change is needed.
 | `concern-mind-sleep-nerves` | Mind, sleep & nerves |
 | `concern-rejuvenation` | Rejuvenation (Rasayana) |
 
+## 4b. Care kits (optional)
+
+A care kit is a set of medicines your pharmacist suggests buying together. Customers can add a whole kit to the cart in one click.
+
+1. In Shopify, go to **Products → Collections → Create collection** and choose *Manual*.
+2. Add the medicines and write a short description.
+3. Give it a **URL handle** that starts with `kit-`.
+   - To show the kit on a concern page, start the handle with that concern's tag name, minus the `concern-`. For example, `kit-pain-management-knee-care` appears on Pain management.
+4. The kit then appears on `/kits`, and on the matching concern page.
+
+Until the first kit exists, `/kits` says that kits are coming soon.
+
+## 4c. Search by symptom
+
+The store's search understands everyday words such as "back pain", "hair fall" and "constipation":
+- It suggests the matching concern pages.
+- It suggests medicines whose traditional uses mention those words.
+
+The word list lives in `src/content/synonyms.ts`. It can only surface uses already written in `src/content/medicines.ts`, so it adds no new claims. Please include it in the pharmacist's review.
+
 ## 5. Webhooks (instant updates)
 
 Pages refresh from Shopify every 5 minutes on their own. For instant updates, add webhooks so edits show at once:

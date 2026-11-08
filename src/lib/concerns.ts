@@ -54,7 +54,7 @@ export async function concernCounts(): Promise<Record<string, number>> {
 }
 
 /** Applies the store's filters and sort to an in-memory list (concern lists are small). */
-export function applyListing(products: ProductCard[], l: Listing): ProductPage {
+export function applyListing(products: ProductCard[], l: Listing, opts: { keepOrder?: boolean } = {}): ProductPage {
   const price = (p: ProductCard) => Number(p.priceRange.minVariantPrice.amount);
   let list = products
     .filter((p) => !l.inStock || p.availableForSale)
@@ -66,6 +66,8 @@ export function applyListing(products: ProductCard[], l: Listing): ProductPage {
     case 'price-desc': list = [...list].sort((a, b) => price(b) - price(a)); break;
     case 'name': list = [...list].sort((a, b) => a.title.localeCompare(b.title)); break;
     default:
+      // search results keep their relevance order, with sold-out items moved to the end
+      if (opts.keepOrder) { list = [...list].sort((a, b) => Number(b.availableForSale) - Number(a.availableForSale)); break; }
       // featured: in-stock first, then by name
       list = [...list].sort((a, b) => Number(b.availableForSale) - Number(a.availableForSale) || a.title.localeCompare(b.title));
   }

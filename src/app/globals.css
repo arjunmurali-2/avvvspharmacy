@@ -689,3 +689,22 @@ html.anim [data-anim="line"]:not([data-in]) { opacity: 0; transform: scaleX(0); 
 .uses li { position: relative; padding: 9px 0 8px 18px; border-bottom: 1px solid var(--line-soft); font-size: 0.95rem; color: var(--ink); }
 .uses li::before { content: ""; position: absolute; left: 2px; top: 1.05em; width: 6px; height: 6px; border-radius: 50%; border: 1px solid var(--thread); }
 @media (max-width: 560px) { .uses { grid-template-columns: minmax(0, 1fr); } }
+
+/* care kits */
+.kits { display: grid; gap: clamp(18px, 2.4vw, 32px); grid-template-columns: repeat(auto-fill, minmax(min(100%, 460px), 1fr)); }
+.kit { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 22px; padding: 20px; border-radius: 10px; background: var(--field); border: 1px solid var(--line-soft); }
+.kit-shots { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; align-content: start; }
+.kit-shots span { position: relative; aspect-ratio: 3 / 4; border-radius: 6px; overflow: hidden; background: radial-gradient(120% 80% at 50% 38%, #FBF8F2 0%, #F1E8D8 62%, #E9DCC5 100%); }
+.kit-shots img { object-fit: contain; mix-blend-mode: multiply; padding: 6%; }
+.kit-body { display: grid; gap: 10px; align-content: start; }
+.kit-body h3 { font-size: 1.45rem; }
+.kit-body h3 a { color: var(--ink); text-decoration: none; }
+.kit-body h3 a:hover { color: var(--accent); }
+.kit-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line-soft); }
+.kit-list li { display: flex; justify-content: space-between; gap: 12px; padding: 7px 0 6px; border-bottom: 1px solid var(--line-soft); font-size: 0.94rem; }
+.kit-list a { color: var(--ink); text-decoration: none; }
+.kit-list a:hover { color: var(--accent); }
+.kit-list span { color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.kit-list .is-out a { color: var(--muted); }
+.kit-foot { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; padding-top: 6px; }
+@media (max-width: 560px) { .kit { grid-template-columns: minmax(0, 1fr); } .kit-shots { grid-template-columns: repeat(4, 1fr); } }

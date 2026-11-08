@@ -6,6 +6,8 @@ import { stripHtml, titleCase } from '@/lib/format';
 import { Crumbs } from '@/components/Crumbs';
 import { Listing } from '@/components/Listing';
 import { JsonLd } from '@/components/JsonLd';
+import { AddKit } from '@/components/Kits';
+import { KIT_PREFIX } from '@/lib/kits';
 
 type Props = { params: Promise<{ handle: string }>; searchParams: Promise<Record<string, string | string[] | undefined>> };
 const formType = (slug: string) => FORMS.find((f) => f.slug === slug)?.type;
@@ -39,6 +41,9 @@ export default async function CollectionPage({ params, searchParams }: Props) {
         <Crumbs trail={[{ name: 'Collections' }, { name }]} />
         <h1>{name}</h1>
         {lede && <p className="head-lede">{lede}</p>}
+        {handle.startsWith(KIT_PREFIX) && r.page.products.length > 0 && (
+          <div className="hero-actions"><AddKit products={r.page.products} label="Add the whole kit to cart" /></div>
+        )}
       </header>
       <Listing name={name} initial={r.page} filters={r.page.filters} listing={listing} source={{ kind: 'collection', handle }} showForms />
       <JsonLd data={breadcrumbLd([{ name, path: `/collections/${handle}` }])} />

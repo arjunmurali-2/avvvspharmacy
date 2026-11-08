@@ -35,3 +35,6 @@ export function stripHtml(html: string) {
 export function dateIN(iso: string) {
   return new Date(iso).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
 }
+
+/** Ayurveda names are spelled many ways; compare loosely (v/w, th/t, dh/d, double letters, aa/a). */
+export const loose = (s: string) => s.toLowerCase().replace(/[^a-z]/g, '').replace(/w/g, 'v').replace(/th/g, 't').replace(/dh/g, 'd').replace(/(.)\1+/g, '$1').replace(/aa/g, 'a');

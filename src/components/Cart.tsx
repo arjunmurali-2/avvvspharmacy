@@ -7,7 +7,7 @@ import * as A from '@/app/actions';
 import type { Cart, CartLine } from '@/lib/shopify/types';
 import { amount, money, titleCase } from '@/lib/format';
 import { FREE_SHIPPING, formByType } from '@/lib/site';
-import { trackBeginCheckout, trackViewCart, type Item } from '@/lib/track';
+import { checkoutTracking, trackBeginCheckout, trackViewCart, type Item } from '@/lib/track';
 import { CloseIcon, RxIcon, UploadIcon } from './Icons';
 import { useStore } from './StoreProvider';
 import { medicineName } from '@/content/medicines';
@@ -195,7 +195,7 @@ export function CheckoutButton({ cart }: { cart: Cart }) {
     <button type="button" className="btn btn-wide" disabled={pending || blocked || !cart.totalQuantity}
       onClick={() => start(async () => {
         trackBeginCheckout(items(cart));
-        const r = await A.prepareCheckout();
+        const r = await A.prepareCheckout(checkoutTracking());
         if (r.url) window.location.href = r.url; else toast({ text: r.error ?? 'Checkout could not be started.', tone: 'error' });
       })}>
       {pending ? 'Opening secure checkout…' : 'Checkout securely'}

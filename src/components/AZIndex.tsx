@@ -3,15 +3,13 @@
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import type { Money } from '@/lib/shopify/types';
-import { indexLetter, money, titleCase } from '@/lib/format';
+import { indexLetter, loose, money, titleCase } from '@/lib/format';
 import { FORMS, formByType } from '@/lib/site';
 import { medicineName } from '@/content/medicines';
 
 type Row = { handle: string; title: string; type: string; available: boolean; price: Money };
 const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
-// Ayurveda names are spelled many ways; compare loosely (v/w, th/t, double letters, a/aa).
-const loose = (s: string) => s.toLowerCase().replace(/[^a-z]/g, '').replace(/w/g, 'v').replace(/th/g, 't').replace(/dh/g, 'd').replace(/(.)\1+/g, '$1').replace(/aa/g, 'a');
 
 export function AZIndex({ rows }: { rows: Row[] }) {
   const [q, setQ] = useState('');

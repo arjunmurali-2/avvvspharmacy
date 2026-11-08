@@ -6,7 +6,7 @@ import { buyNow } from '@/app/actions';
 import type { Image as Img, Product } from '@/lib/shopify/types';
 import { amount, money, titleCase } from '@/lib/format';
 import { CONTACT } from '@/lib/site';
-import { trackBeginCheckout, trackViewItem } from '@/lib/track';
+import { checkoutTracking, trackBeginCheckout, trackViewItem } from '@/lib/track';
 import { Qty } from './Cart';
 import { PrintIcon, ShieldIcon, LeafIcon, TruckIcon, RxIcon } from './Icons';
 import { WishButton, itemOf } from './ProductTile';
@@ -86,7 +86,7 @@ function Share({ name }: { name: string }) {
   );
 }
 
-export function BuyBox({ product }: { product: Product }) {
+export function BuyBox({ product, hasAlternatives }: { product: Product; hasAlternatives?: boolean }) {
   const { add, busy, toast } = useStore();
   const variants = product.variants.nodes;
   const [vid, setVid] = useState(() => (variants.find((v) => v.availableForSale) ?? variants[0])?.id);
@@ -117,7 +117,7 @@ export function BuyBox({ product }: { product: Product }) {
   const addIt = () => add(v.id, qty, item);
   const now = () => startGo(async () => {
     trackBeginCheckout([{ ...item, quantity: qty }]);
-    const r = await buyNow(v.id, qty);
+    const r = await buyNow(v.id, qty, checkoutTracking());
     if (r.url) window.location.href = r.url; else toast({ text: r.error ?? 'Checkout could not be started.', tone: 'error' });
   });
 
@@ -155,6 +155,7 @@ export function BuyBox({ product }: { product: Product }) {
         ) : (
           <div style={{ display: 'grid', gap: 14 }}>
             <Notify product={product} />
+            {hasAlternatives && <a className="link" href="#alternatives">See in-stock medicines for similar uses ↓</a>}
             <WishButton product={product} inline />
           </div>
         )}

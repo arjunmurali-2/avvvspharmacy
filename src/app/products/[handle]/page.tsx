@@ -7,11 +7,12 @@ import { readMedicine } from '@/lib/medicine';
 import { amount, stripHtml, titleCase } from '@/lib/format';
 import { CONCERNS, CONTACT, abs, breadcrumbLd, formByType } from '@/lib/site';
 import { FORM_GUIDE, medicineContent, medicineName } from '@/content/medicines';
-import { concernsFor } from '@/lib/concerns';
+import { concernProducts, concernsFor } from '@/lib/concerns';
 import { Crumbs } from '@/components/Crumbs';
 import { JsonLd } from '@/components/JsonLd';
 import { ProductGrid } from '@/components/ProductTile';
 import { BuyBox, Gallery, ProductTracker } from '@/components/ProductView';
+import type { ProductCard } from '@/lib/shopify/types';
 import { RecentlyViewed } from '@/components/HomeParts';
 
 type Props = { params: Promise<{ handle: string }> };
@@ -49,6 +50,20 @@ export default async function ProductPage({ params }: Props) {
     p.productType ? safe(getProducts({ type: p.productType, inStock: true, first: 9, sort: 'featured' }), null) : Promise.resolve(null),
   ]);
   const more = (sameForm?.products ?? []).filter((x) => x.id !== p.id && !related.some((r) => r.id === x.id)).slice(0, 4);
+
+  // sold out: in-stock medicines listed under the same concerns, same form first
+  let alternatives: ProductCard[] = [];
+  if (!p.availableForSale && concerns.length) {
+    const pools = await Promise.all(concerns.map((c) => concernProducts(c.slug).catch(() => ({ products: [] as ProductCard[] }))));
+    const score = new Map<string, { card: ProductCard; n: number }>();
+    for (const pool of pools) for (const card of pool.products) {
+      if (card.handle === p.handle || !card.availableForSale) continue;
+      const cur = score.get(card.handle) ?? { card, n: 0 };
+      cur.n += 1 + (card.productType === p.productType ? 0.5 : 0);
+      score.set(card.handle, cur);
+    }
+    alternatives = [...score.values()].sort((a, b) => b.n - a.n).slice(0, 4).map((x) => x.card);
+  }
   // AVVVS's reviewed content (content/medicines.ts) replaces the raw Shopify description
   const hasDescription = !content && stripHtml(p.descriptionHtml).length > 0;
   const v = p.variants.nodes[0];
@@ -77,7 +92,7 @@ export default async function ProductPage({ params }: Props) {
             )}
           </div>
 
-          <BuyBox product={p} />
+          <BuyBox product={p} hasAlternatives={alternatives.length > 0} />
 
           {med.rxRecommended && (
             <div className="caution" role="note">
@@ -147,6 +162,19 @@ export default async function ProductPage({ params }: Props) {
           )}
         </div>
       </div>
+
+      {alternatives.length > 0 && (
+        <section className="section" id="alternatives" aria-labelledby="alt-h" style={{ paddingTop: 0 }}>
+          <div className="section-head" data-anim>
+            <div>
+              <p className="eyebrow">In stock now</p>
+              <h2 id="alt-h">For similar traditional uses</h2>
+            </div>
+            <p className="fine" style={{ maxWidth: '30rem' }}>These are listed under the same concerns as {name}. They are not substitutes: please ask your doctor or our pharmacist before switching medicines.</p>
+          </div>
+          <ProductGrid products={alternatives} className="grid grid-4" />
+        </section>
+      )}
 
       {related.length > 0 && (
         <section className="section" aria-labelledby="rel-h" style={{ paddingTop: 0 }}>

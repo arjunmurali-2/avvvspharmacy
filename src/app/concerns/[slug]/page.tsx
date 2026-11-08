@@ -3,11 +3,14 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { listingFromParams } from '@/lib/shopify/catalog';
 import { applyListing, concernProducts } from '@/lib/concerns';
-import { CONCERNS, CONTACT, FORMS, breadcrumbLd, concernBySlug } from '@/lib/site';
+import { CONCERNS, CONTACT, FORMS, breadcrumbLd, concernBySlug, faqLd } from '@/lib/site';
 import { Crumbs } from '@/components/Crumbs';
 import { Listing } from '@/components/Listing';
 import { JsonLd } from '@/components/JsonLd';
 import { DoctorIcon } from '@/components/Icons';
+import { KitCard } from '@/components/Kits';
+import { getKits } from '@/lib/kits';
+import { CONCERN_INTROS } from '@/content/concerns';
 
 type Props = { params: Promise<{ slug: string }>; searchParams: Promise<Record<string, string | string[] | undefined>> };
 const formType = (slug: string) => FORMS.find((f) => f.slug === slug)?.type;
@@ -27,8 +30,9 @@ export default async function ConcernPage({ params, searchParams }: Props) {
   const c = concernBySlug(slug);
   if (!c) notFound();
   const listing = listingFromParams(await searchParams, formType);
-  const { products } = await concernProducts(slug);
+  const [{ products }, kits] = await Promise.all([concernProducts(slug), getKits(slug)]);
   const page = applyListing(products, listing);
+  const intro = CONCERN_INTROS[slug];
 
   return (
     <div className="wrap">
@@ -37,7 +41,7 @@ export default async function ConcernPage({ params, searchParams }: Props) {
         <div className="head-row">
           <div style={{ display: 'grid', gap: 10 }}>
             <h1>{c.name}</h1>
-            <p className="head-lede">{c.note}. Ayurveda medicines that AVVVS traditionally recommends in this area.</p>
+            <p className="head-lede">{intro?.intro ?? `${c.note}. Ayurveda medicines that AVVVS traditionally recommends in this area.`}</p>
           </div>
           <a className="btn-quiet" href={CONTACT.clinic} rel="noopener"><DoctorIcon className="" /> Consult a doctor <span className="arr" aria-hidden="true">↗</span></a>
         </div>
@@ -45,6 +49,12 @@ export default async function ConcernPage({ params, searchParams }: Props) {
           <p>This group is a way to browse, not a diagnosis. Please choose medicines with a doctor’s advice, especially for children, during pregnancy, or alongside other treatment.</p>
         </div>
       </header>
+      {kits.length > 0 && (
+        <section aria-labelledby="kits-h" style={{ marginBottom: 48 }}>
+          <div className="section-head" data-anim><div><p className="eyebrow">Put together by our pharmacists</p><h2 id="kits-h">Care kits</h2></div></div>
+          <div className="kits">{kits.map((k) => <KitCard key={k.handle} kit={k} />)}</div>
+        </section>
+      )}
       {products.length ? (
         <Listing name={c.name} initial={page} filters={page.filters} listing={listing} source={{ kind: 'products' }} showForms
           sorts={[{ value: 'featured', label: 'In stock first' }, { value: 'name', label: 'Name, A–Z' }, { value: 'price-asc', label: 'Price, low to high' }, { value: 'price-desc', label: 'Price, high to low' }]} />
@@ -63,6 +73,7 @@ export default async function ConcernPage({ params, searchParams }: Props) {
         <div className="tags">{CONCERNS.filter((x) => x.slug !== slug).map((x) => <Link key={x.slug} href={`/concerns/${x.slug}`}>{x.name}</Link>)}</div>
       </nav>
       <JsonLd data={breadcrumbLd([{ name: 'Shop by concern', path: '/concerns' }, { name: c.name, path: `/concerns/${slug}` }])} />
+      {intro?.faq?.length ? <JsonLd data={faqLd(intro.faq)} /> : null}
     </div>
   );
 }
