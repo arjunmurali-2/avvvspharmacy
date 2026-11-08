@@ -1,4 +1,4 @@
-/* AVVVS Ayur Store. The same world as avvvs.com: ivory and parchment, Gloock headings, AVVVS blue
+/* AVVVS Ayur Store. The same world as avvvs.com: ivory and parchment, Castle T headings, AVVVS blue
    for actions, gold kept for the thread and the primary action's hairline. Light only. */
 :root {
   --bg: #F4EFE5;
@@ -22,7 +22,7 @@
   --bar-bg: rgba(244, 239, 229, 0.94);
   --danger: #A3341F;
   --ok: #06619B;
-  --f-display: var(--font-gloock), "Gloock", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --f-display: var(--font-castle), "CastleT", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
   --f-body: var(--font-noto-ml), "Noto Sans Malayalam", "Nirmala UI", "Segoe UI", system-ui, sans-serif;
   --gutter: max(20px, env(safe-area-inset-left, 0px));
   --gutter-r: max(20px, env(safe-area-inset-right, 0px));
@@ -303,7 +303,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .facets-close { display: none; justify-content: space-between; align-items: center; }
 @keyframes rise { from { transform: translateY(100%); } }
 
-/* product tile: editorial, no card. A tall warm plate for the photograph, the name in Gloock with
+/* product tile: editorial, no card. A tall warm plate for the photograph, the name in Castle T with
    the price set against it on one line, and a round quick-add that slides up on hover. */
 .grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(220px, 42vw), 1fr)); gap: clamp(28px, 3vw, 44px) clamp(14px, 1.8vw, 28px); }
 .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }

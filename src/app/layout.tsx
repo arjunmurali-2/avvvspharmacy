@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
-import { Gloock, Noto_Sans_Malayalam } from 'next/font/google';
+import { Noto_Sans_Malayalam } from 'next/font/google';
+import localFont from 'next/font/local';
 import './globals.css';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
@@ -12,7 +13,13 @@ import { JsonLd } from '@/components/JsonLd';
 import { ANIM_BOOT, Motion } from '@/components/Motion';
 import { SITE_URL, ORG, organizationLd } from '@/lib/site';
 
-const gloock = Gloock({ weight: '400', subsets: ['latin'], variable: '--font-gloock', display: 'swap' });
+// Headings: Castle T (URW), self-hosted, the same file and settings as avvvs.com (web/) so the
+// two sites read as one. Next measures a Times New Roman fallback to keep layout steady while it loads.
+const castle = localFont({
+  src: [{ path: '../fonts/CastleT.woff2', weight: '400', style: 'normal' }],
+  variable: '--font-castle', display: 'swap',
+  fallback: ['Iowan Old Style', 'Palatino Linotype', 'Georgia', 'serif'], adjustFontFallback: 'Times New Roman',
+});
 const noto = Noto_Sans_Malayalam({ weight: ['400', '500', '600'], subsets: ['latin', 'malayalam'], variable: '--font-noto-ml', display: 'swap' });
 
 export const metadata: Metadata = {
@@ -32,7 +39,7 @@ export const viewport: Viewport = { width: 'device-width', initialScale: 1, view
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-IN" className={`${gloock.variable} ${noto.variable}`} suppressHydrationWarning>
+    <html lang="en-IN" className={`${castle.variable} ${noto.variable}`} suppressHydrationWarning>
       <head><script dangerouslySetInnerHTML={{ __html: ANIM_BOOT }} /></head>
       <body suppressHydrationWarning>
         <a href="#main" className="skip">Skip to content</a>
