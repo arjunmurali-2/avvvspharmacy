@@ -9,9 +9,13 @@ import { ProductGrid } from '@/components/ProductTile';
 import { HeroSearch, RecentlyViewed } from '@/components/HomeParts';
 import { JsonLd } from '@/components/JsonLd';
 import { SplitTitle } from '@/components/Motion';
+import { ChatIcon, ClockIcon, DoctorIcon, LeafIcon, RxIcon, SearchIcon, ShieldIcon } from '@/components/Icons';
 import { SITE_URL } from '@/lib/site';
 
 export const revalidate = 300;
+
+// everyday words the symptom search understands (src/content/synonyms.ts)
+const TRY = ['back pain', 'hair fall', 'acidity', 'cough', 'joint pain'];
 
 const EMPTY: ProductPage = { products: [], pageInfo: { hasNextPage: false, endCursor: null }, filters: [] };
 
@@ -21,7 +25,7 @@ export default async function Home() {
     safe(getCollectionPage('proprietary', { inStock: true, first: 4 }).then((r) => r?.page ?? EMPTY), EMPTY),
     safe(getProducts({ inStock: true, sort: 'featured', first: 8 }), EMPTY),
   ]);
-  const heroShots = [...popular.products, ...classical.products].filter((p) => p.featuredImage).filter((p, i, a) => a.findIndex((x) => x.id === p.id) === i).slice(0, 4);
+  const heroShots = [...popular.products, ...classical.products].filter((p) => p.featuredImage).filter((p, i, a) => a.findIndex((x) => x.id === p.id) === i).slice(0, 3);
 
   return (
     <>
@@ -33,6 +37,10 @@ export default async function Home() {
             <p className="hero-ml ml" lang="ml" data-anim data-delay="250">{ORG.malayalam}</p>
             <p className="hero-lede" data-anim data-delay="350">Classical and proprietary formulations made in our own GMP-certified factory in Kerala. Find a medicine by name, by form, or by concern.</p>
             <HeroSearch />
+            <p className="hero-try" data-anim data-delay="400">
+              <span>Or search by what you feel:</span>
+              {TRY.map((t) => <Link key={t} href={`/search?q=${encodeURIComponent(t)}`}>{t}</Link>)}
+            </p>
             <div className="hero-actions" data-anim data-delay="450">
               <Link className="btn" href="/medicines">Browse medicines A–Z <span className="arr" aria-hidden="true">→</span></Link>
               <a className="btn-quiet" href={CONTACT.clinic} rel="noopener">Consult a doctor ↗</a>
@@ -42,7 +50,7 @@ export default async function Home() {
             <div className="hero-art" aria-label="From the pharmacy" data-anim="stagger">
               {heroShots.map((p, i) => (
                 <Link key={p.id} href={`/products/${p.handle}`} aria-label={titleCase(p.title)}>
-                  <Image src={p.featuredImage!.url} alt={p.featuredImage!.altText || titleCase(p.title)} fill sizes="(max-width: 900px) 25vw, 220px" priority={i < 2} />
+                  <Image src={p.featuredImage!.url} alt={p.featuredImage!.altText || titleCase(p.title)} fill sizes="(max-width: 900px) 30vw, 240px" priority={i < 2} />
                 </Link>
               ))}
             </div>
@@ -52,11 +60,17 @@ export default async function Home() {
       </section>
 
       <div className="wrap">
+        <ul className="services" data-anim="stagger" aria-label="Pharmacy services">
+          <li><Link href="/cart"><span className="svc-ico"><RxIcon /></span><b>Upload a prescription</b><span>Attach it to your order for our pharmacist</span><i className="go" aria-hidden="true">→</i></Link></li>
+          <li><a href={CONTACT.clinic} rel="noopener"><span className="svc-ico"><DoctorIcon /></span><b>Consult a doctor</b><span>At the AVVVS Ayur Speciality Clinic</span><i className="go" aria-hidden="true">↗</i></a></li>
+          <li><a href={`https://wa.me/${CONTACT.whatsapp}`} rel="noopener"><span className="svc-ico"><ChatIcon /></span><b>Order on WhatsApp</b><span>Send your list to the pharmacy</span><i className="go" aria-hidden="true">↗</i></a></li>
+          <li><Link href="/concerns"><span className="svc-ico"><SearchIcon /></span><b>Shop by concern</b><span>Twelve departments of care</span><i className="go" aria-hidden="true">→</i></Link></li>
+        </ul>
         <ul className="trust" data-anim="stagger">
-          <li><b>Since {ORG.founded}</b><span>Three generations of Ayurveda in Kozhikode</span></li>
-          <li><b>Made by AVVVS</b><span>In our own GMP-certified factory</span></li>
-          <li><b>Secure checkout</b><span>Payments handled by Shopify</span></li>
-          <li><b>Pharmacist help</b><span>Call or WhatsApp {CONTACT.phones[0]}</span></li>
+          <li><ClockIcon /><div><b>Since {ORG.founded}</b><span>Three generations of Ayurveda in Kozhikode</span></div></li>
+          <li><LeafIcon /><div><b>Made by AVVVS</b><span>In our own GMP-certified factory</span></div></li>
+          <li><ShieldIcon /><div><b>Secure checkout</b><span>Payments handled by Shopify</span></div></li>
+          <li><ChatIcon /><div><b>Pharmacist help</b><span>Call or WhatsApp {CONTACT.phones[0]}</span></div></li>
         </ul>
       </div>
 
@@ -139,7 +153,7 @@ export default async function Home() {
 
       <RecentlyViewed />
 
-      <section className="section section-band" aria-labelledby="consult-h">
+      <section className="section section-deep" aria-labelledby="consult-h">
         <div className="wrap consult">
           <div className="consult-copy" data-anim>
             <p className="eyebrow">AVVVS Ayur Speciality Clinic</p>
