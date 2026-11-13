@@ -120,7 +120,7 @@ export function Header() {
                 {CONCERNS.map((c) => <li key={c.slug}><Link href={`/concerns/${c.slug}`}>{c.name}<small>{c.note}</small></Link></li>)}
               </ul>
             </div>
-            <div>
+            <div className="mega-forms">
               <h2>Shop by form</h2>
               <ul>
                 {FORMS.map((f) => <li key={f.slug}><Link href={`/shop/${f.slug}`}>{f.name}<small>{f.note}</small></Link></li>)}

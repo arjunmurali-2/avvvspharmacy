@@ -97,7 +97,7 @@ export default async function Home() {
         <section className="section wrap" aria-labelledby="pop-h" style={{ paddingTop: 0 }}>
           <div className="section-head" data-anim>
             <div><p className="eyebrow">In stock now</p><h2 id="pop-h">Most ordered</h2></div>
-            <Link className="link" href="/shop/kashayam">All kashayams →</Link>
+            <Link className="link" href="/medicines">All medicines →</Link>
           </div>
           <ProductGrid products={popular.products} className="grid grid-4" />
         </section>
