@@ -12,3 +12,6 @@ playwright-report/
 # local secrets
 .env
 .env*.local
+
+# hallmark records and screenshots
+.hallmark/

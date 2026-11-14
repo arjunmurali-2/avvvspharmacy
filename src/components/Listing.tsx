@@ -13,7 +13,7 @@ import { ProductGrid, itemOf } from './ProductTile';
 
 const SORTS: { value: Sort; label: string }[] = [
   { value: 'featured', label: 'Featured' },
-  { value: 'name', label: 'Name, A–Z' },
+  { value: 'name', label: 'Name, A to Z' },
   { value: 'price-asc', label: 'Price, low to high' },
   { value: 'price-desc', label: 'Price, high to low' },
   { value: 'newest', label: 'Newest' },
@@ -93,7 +93,7 @@ export function Listing({ name, initial, source, listing, filters, showForms, so
         <h3>Price (₹)</h3>
         <div className="price-row">
           <input className="input" name="min" type="number" inputMode="numeric" min={0} placeholder="Min" defaultValue={listing.min ?? ''} aria-label="Minimum price" key={`min-${listing.min}`} />
-          <span aria-hidden="true">–</span>
+          <span aria-hidden="true">to</span>
           <input className="input" name="max" type="number" inputMode="numeric" min={0} placeholder={ceiling ? String(ceiling) : 'Max'} defaultValue={listing.max ?? ''} aria-label="Maximum price" key={`max-${listing.max}`} />
         </div>
         <button type="submit" className="btn-quiet btn-sm">Apply price</button>
@@ -125,8 +125,8 @@ export function Listing({ name, initial, source, listing, filters, showForms, so
           {products.length ? <ProductGrid products={products} priority={4} /> : (
             <div className="empty">
               <h3>Nothing matches these filters</h3>
-              {emptyNote ?? <p className="muted">Try removing a filter, or browse every medicine A–Z.</p>}
-              {active > 0 ? <Link className="btn-quiet" href={href({ stock: null, min: null, max: null, form: null })}>Clear filters</Link> : <Link className="btn-quiet" href="/medicines">Medicines A–Z</Link>}
+              {emptyNote ?? <p className="muted">Try removing a filter, or browse every medicine A to Z.</p>}
+              {active > 0 ? <Link className="btn-quiet" href={href({ stock: null, min: null, max: null, form: null })}>Clear filters</Link> : <Link className="btn-quiet" href="/medicines">Medicines A to Z</Link>}
             </div>
           )}
         </div>

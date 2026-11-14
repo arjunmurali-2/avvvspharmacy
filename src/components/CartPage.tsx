@@ -45,7 +45,7 @@ export function CartPageView() {
       </div>
       {suggestions.length > 0 && (
         <section className="section" aria-labelledby="recs-h" style={{ paddingTop: 0 }}>
-          <div className="section-head"><div><p className="eyebrow">You may also need</p><h2 id="recs-h">Often bought together</h2></div></div>
+          <div className="section-head"><div><h2 id="recs-h">Often bought together</h2></div></div>
           <ProductGrid products={suggestions} className="grid grid-4" />
         </section>
       )}

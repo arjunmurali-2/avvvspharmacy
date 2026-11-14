@@ -16,7 +16,7 @@ export function Footer() {
         <nav className="foot-col" aria-label="Shop">
           <h2 className="foot-h">Shop</h2>
           <ul>
-            <li><Link href="/medicines">Medicines A–Z</Link></li>
+            <li><Link href="/medicines">Medicines A to Z</Link></li>
             {COLLECTIONS.map((c) => <li key={c.handle}><Link href={`/collections/${c.handle}`}>{c.name}</Link></li>)}
             <li><Link href="/concerns">Shop by concern</Link></li>
             <li><Link href="/wishlist">Wishlist</Link></li>
@@ -31,16 +31,17 @@ export function Footer() {
           <ul>
             <li><Link href="/account" prefetch={false}>Your account &amp; orders</Link></li>
             {HELP_PAGES.map((p) => <li key={p.handle}><Link href={`/pages/${p.handle}`}>{p.label}</Link></li>)}
-            <li><a href={`https://wa.me/${CONTACT.whatsapp}`} rel="noopener">WhatsApp us ↗</a></li>
+            <li><a href={`https://wa.me/${CONTACT.whatsapp}`} rel="noopener">WhatsApp us</a></li>
           </ul>
         </nav>
         <div className="foot-col">
           <h2 className="foot-h">AVVVS</h2>
           <ul>
-            <li><a href={CONTACT.clinic} rel="noopener">Ayur Clinic: consult a doctor ↗</a></li>
-            <li><a href={`${MAIN_SITE}/manufacturing`} rel="noopener">Our manufacturing ↗</a></li>
-            <li><a href={`${MAIN_SITE}/our-history`} rel="noopener">Our history ↗</a></li>
-            <li><a href={MAIN_SITE} rel="noopener">avvvs.com ↗</a></li>
+            <li><a href={CONTACT.clinic} rel="noopener">Ayur Clinic: consult a doctor</a></li>
+            <li><a href={`${MAIN_SITE}/manufacturing`} rel="noopener">Our manufacturing</a></li>
+            <li><a href={`${MAIN_SITE}/our-history`} rel="noopener">Our history</a></li>
+            <li><a href={CONTACT.gloveda} rel="noopener">Gloveda Herbals skincare</a></li>
+            <li><a href={MAIN_SITE} rel="noopener">avvvs.com</a></li>
           </ul>
           <address style={{ marginTop: 16 }}>
             <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>

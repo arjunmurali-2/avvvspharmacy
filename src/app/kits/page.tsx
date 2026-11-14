@@ -30,7 +30,7 @@ export default async function Kits() {
           <p className="muted" style={{ maxWidth: '34rem' }}>Our pharmacists are putting the first kits together. Meanwhile, browse by concern, or ask a doctor at the AVVVS Ayur Clinic.</p>
           <div className="hero-actions">
             <Link className="btn" href="/concerns">Shop by concern</Link>
-            <a className="btn-quiet" href={CONTACT.clinic} rel="noopener">Consult a doctor ↗</a>
+            <a className="btn-quiet" href={CONTACT.clinic} rel="noopener">Consult a doctor</a>
           </div>
         </div>
       )}

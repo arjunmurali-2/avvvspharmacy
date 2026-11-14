@@ -6,6 +6,7 @@ import { dateIN, money, titleCase } from '@/lib/format';
 import { CONTACT } from '@/lib/site';
 import { BuyAgain } from '@/components/Account';
 import { OrderStatus } from '@/components/OrderStatus';
+import { fitted } from '@/lib/shopify/image';
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -35,7 +36,7 @@ export default async function OrderPage({ params }: Props) {
         </div>
         <div className="hero-actions">
           <BuyAgain orderId={o.id} />
-          <a className="btn-quiet" href={o.statusPageUrl} target="_blank" rel="noopener noreferrer">Order status page ↗</a>
+          <a className="btn-quiet" href={o.statusPageUrl} target="_blank" rel="noopener noreferrer">Order status page</a>
         </div>
       </section>
 
@@ -49,7 +50,7 @@ export default async function OrderPage({ params }: Props) {
                 {f.trackingInformation.map((t, i) => (
                   <p key={i} className="muted">
                     {t.company ?? 'Courier'}{t.number ? `: ${t.number}` : ''}{' '}
-                    {t.url && <a href={t.url} target="_blank" rel="noopener noreferrer">Track parcel ↗</a>}
+                    {t.url && <a href={t.url} target="_blank" rel="noopener noreferrer">Track parcel</a>}
                   </p>
                 ))}
               </li>
@@ -63,10 +64,10 @@ export default async function OrderPage({ params }: Props) {
         <ul className="lines">
           {o.lineItems.nodes.map((l) => (
             <li key={l.id} className="line">
-              <div className="line-img">{l.image && <Image src={l.image.url} alt="" width={76} height={76} />}</div>
+              <div className="line-img">{l.image && <Image src={fitted(l.image.url)} alt="" width={76} height={76} />}</div>
               <div>
                 <p className="line-title">{titleCase(l.title)}</p>
-                <p className="line-meta">{l.variantTitle && l.variantTitle !== 'Default Title' ? `${l.variantTitle} · ` : ''}Qty {l.quantity}{l.price ? ` · ${money(l.price)} each` : ''}</p>
+                <p className="line-meta">{l.variantTitle && l.variantTitle !== 'Default Title' ? `${l.variantTitle}, ` : ''}Qty {l.quantity}{l.price ? `, ${money(l.price)} each` : ''}</p>
               </div>
               <p className="line-price">{l.totalPrice ? money(l.totalPrice) : ''}</p>
             </li>

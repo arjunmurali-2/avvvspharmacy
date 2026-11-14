@@ -13,14 +13,14 @@ import { JsonLd } from '@/components/JsonLd';
 import { ANIM_BOOT, Motion } from '@/components/Motion';
 import { SITE_URL, ORG, organizationLd } from '@/lib/site';
 
-// Headings: Castle T (URW), self-hosted, the same file and settings as avvvs.com (web/) so the
-// two sites read as one. Next measures a Times New Roman fallback to keep layout steady while it loads.
+// Castle T (URW), self-hosted, the same file as avvvs.com (web/) so the two sites read as one.
+// Castle T has no rupee sign, so the variable carries the family alone (no generated fallback face):
+// the stacks in tokens.css then hand "₹" and Malayalam to Noto Sans Malayalam, not to a serif.
 const castle = localFont({
   src: [{ path: '../fonts/CastleT.woff2', weight: '400', style: 'normal' }],
-  variable: '--font-castle', display: 'swap',
-  fallback: ['Iowan Old Style', 'Palatino Linotype', 'Georgia', 'serif'], adjustFontFallback: 'Times New Roman',
+  variable: '--font-castle', display: 'swap', adjustFontFallback: false,
 });
-const noto = Noto_Sans_Malayalam({ weight: ['400', '500', '600'], subsets: ['latin', 'malayalam'], variable: '--font-noto-ml', display: 'swap' });
+const noto = Noto_Sans_Malayalam({ weight: ['400'], subsets: ['latin', 'malayalam'], variable: '--font-noto-ml', display: 'swap', adjustFontFallback: false });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   verification: { google: process.env.NEXT_PUBLIC_GSC_VERIFICATION || undefined },
 };
 
-export const viewport: Viewport = { width: 'device-width', initialScale: 1, viewportFit: 'cover', colorScheme: 'light', themeColor: '#F4EFE5' };
+export const viewport: Viewport = { width: 'device-width', initialScale: 1, viewportFit: 'cover', colorScheme: 'light', themeColor: '#f7f9fc' };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

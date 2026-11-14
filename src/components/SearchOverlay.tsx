@@ -11,6 +11,7 @@ import { CONCERNS, FORMS, formByType } from '@/lib/site';
 import { trackSearch } from '@/lib/track';
 import { CloseIcon, SearchIcon } from './Icons';
 import { medicineName } from '@/content/medicines';
+import { fitted } from '@/lib/shopify/image';
 
 const RECENT = 'avvvs-searches';
 const readRecent = (): string[] => { try { return JSON.parse(localStorage.getItem(RECENT) || '[]'); } catch { return []; } };
@@ -138,7 +139,7 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
                   <li key={c.slug}>
                     <a className="search-opt q" href={`/concerns/${c.slug}`} {...optProps(`k-${c.slug}`)}
                       onClick={(e) => { e.preventDefault(); go(`/concerns/${c.slug}`, t); }}>
-                      <span aria-hidden="true">→</span><span>{c.name}<small>{c.note}</small></span>
+                      <SearchIcon /><span>{c.name}<small>{c.note}</small></span>
                     </a>
                   </li>
                 ))}
@@ -170,8 +171,8 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
                   <li key={p.id}>
                     <a className="search-opt" href={`/products/${p.handle}`} {...optProps(p.id)}
                       onClick={(e) => { e.preventDefault(); go(`/products/${p.handle}`, t); }}>
-                      <span className="img">{p.featuredImage && <Image src={p.featuredImage.url} alt="" width={48} height={48} />}</span>
-                      <span>{medicineName(p.handle, p.title)}<small>{p.why ? `Traditional use: ${p.why}` : formByType(p.productType)?.name ?? titleCase(p.productType)}{!p.availableForSale ? ' · out of stock' : ''}</small></span>
+                      <span className="img">{p.featuredImage && <Image src={fitted(p.featuredImage.url)} alt="" width={48} height={48} />}</span>
+                      <span>{medicineName(p.handle, p.title)}<small>{p.why ? `Traditional use: ${p.why}` : formByType(p.productType)?.name ?? titleCase(p.productType)}{!p.availableForSale ? ', out of stock' : ''}</small></span>
                       <span className="pr">{money(p.priceRange.minVariantPrice, { compact: true })}</span>
                     </a>
                   </li>
@@ -189,7 +190,7 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
                   return (
                     <li key={c.handle}>
                       <a className="search-opt q" href={href} {...optProps(`c-${c.handle}`)} onClick={(e) => { e.preventDefault(); go(href, t); }}>
-                        <span aria-hidden="true">→</span><span>{titleCase(c.title)}</span>
+                        <SearchIcon /><span>{titleCase(c.title)}</span>
                       </a>
                     </li>
                   );
@@ -202,17 +203,17 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
           {nothing && (
             <div className="empty">
               <h3>No medicines match “{t}”</h3>
-              <p className="muted">Try another spelling, or browse the full A–Z list.</p>
-              <Link className="btn-quiet btn-sm" href="/medicines" onClick={onClose}>Medicines A–Z</Link>
+              <p className="muted">Try another spelling, or browse the full A to Z list.</p>
+              <Link className="btn-quiet btn-sm" href="/medicines" onClick={onClose}>Medicines A to Z</Link>
             </div>
           )}
           {options.length > 0 && (
             <p className="search-group">
-              <a className="link" href={`/search?q=${encodeURIComponent(t)}`} onClick={(e) => { e.preventDefault(); go(`/search?q=${encodeURIComponent(t)}`, t); }}>See all results for “{t}” →</a>
+              <a className="link" href={`/search?q=${encodeURIComponent(t)}`} onClick={(e) => { e.preventDefault(); go(`/search?q=${encodeURIComponent(t)}`, t); }}>See all results for “{t}”</a>
             </p>
           )}
         </div>
-        <div className="search-foot" aria-hidden="true"><span>↑ ↓ to move · Enter to open</span><span>Esc to close</span></div>
+        <div className="search-foot" aria-hidden="true"><span>Arrow keys to move, Enter to open</span><span>Esc to close</span></div>
       </div>
     </div>
   );

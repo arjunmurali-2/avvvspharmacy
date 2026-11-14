@@ -45,7 +45,7 @@ export default async function FormPage({ params, searchParams }: Props) {
         </div>
       </header>
       <Listing name={f.name} initial={page} listing={listing} source={{ kind: 'products' }}
-        sorts={[{ value: 'name', label: 'Name, A–Z' }, { value: 'featured', label: 'Most ordered' }, { value: 'price-asc', label: 'Price, low to high' }, { value: 'price-desc', label: 'Price, high to low' }, { value: 'newest', label: 'Newest' }]} />
+        sorts={[{ value: 'name', label: 'Name, A to Z' }, { value: 'featured', label: 'Most ordered' }, { value: 'price-asc', label: 'Price, low to high' }, { value: 'price-desc', label: 'Price, high to low' }, { value: 'newest', label: 'Newest' }]} />
       <JsonLd data={breadcrumbLd([{ name: f.name, path: `/shop/${f.slug}` }])} />
     </div>
   );

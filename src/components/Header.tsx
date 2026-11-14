@@ -84,12 +84,12 @@ export function Header() {
 
           <nav className="bar-nav" aria-label="Main">
             <button type="button" aria-expanded={mega} aria-controls="mega" onClick={() => setMega((m) => !m)}>
-              Shop<span className="caret" aria-hidden="true">▾</span>
+              Shop<svg className="caret" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5l5 5 5-5" fill="none" stroke="currentColor" strokeWidth="1.4" /></svg>
             </button>
             <Link href="/concerns" aria-current={cur('/concerns')}>By concern</Link>
-            <Link href="/medicines" aria-current={cur('/medicines')}>Medicines A–Z</Link>
+            <Link href="/medicines" aria-current={cur('/medicines')}>Medicines A to Z</Link>
             <Link className="nav-wide" href="/collections/classical" aria-current={cur('/collections/classical')}>Classical</Link>
-            <a href={CONTACT.clinic} rel="noopener">Consult a doctor <span aria-hidden="true">↗</span></a>
+            <a href={CONTACT.clinic} rel="noopener">Consult a doctor</a>
           </nav>
 
           <div className="bar-end">
@@ -131,13 +131,14 @@ export function Header() {
               <ul>
                 {COLLECTIONS.map((c) => <li key={c.handle}><Link href={`/collections/${c.handle}`}>{c.name}<small>{c.note}</small></Link></li>)}
                 <li><Link href="/kits">Care kits<small>Put together by our pharmacists</small></Link></li>
-                <li><Link href="/medicines">Every medicine, A–Z<small>Find a medicine by name</small></Link></li>
+                <li><Link href="/medicines">Every medicine, A to Z<small>Find a medicine by name</small></Link></li>
               </ul>
             </div>
             <div className="mega-foot">
-              <a href={CONTACT.clinic} rel="noopener">Not sure what you need? Consult an AVVVS doctor ↗</a>
+              <a href={CONTACT.clinic} rel="noopener">Not sure what you need? Consult an AVVVS doctor</a>
               <Link href="/cart">Upload a prescription with your order</Link>
-              <a href={`https://wa.me/${CONTACT.whatsapp}`} rel="noopener">Order on WhatsApp ↗</a>
+              <a href={`https://wa.me/${CONTACT.whatsapp}`} rel="noopener">Order on WhatsApp</a>
+              <a href={CONTACT.gloveda} rel="noopener">Gloveda Herbals: skincare and cosmetics</a>
             </div>
           </div>
         </div>
@@ -168,12 +169,13 @@ export function Header() {
             </details>
           </div>
           <nav className="sheet-links" aria-label="More">
-            <Link href="/medicines">Medicines A–Z</Link>
+            <Link href="/medicines">Medicines A to Z</Link>
             <Link href={signedIn ? '/account' : '/account/login'} prefetch={false}>{signedIn ? 'Your account' : 'Sign in'}</Link>
             {signedIn && <Link href="/account/orders">Your orders</Link>}
             <Link href="/wishlist">Wishlist{wishlist.length ? ` (${wishlist.length})` : ''}</Link>
-            <a href={CONTACT.clinic} rel="noopener">Consult a doctor ↗</a>
-            <a href={MAIN_SITE} rel="noopener">avvvs.com ↗</a>
+            <a href={CONTACT.clinic} rel="noopener">Consult a doctor</a>
+            <a href={CONTACT.gloveda} rel="noopener">Gloveda Herbals skincare</a>
+            <a href={MAIN_SITE} rel="noopener">avvvs.com</a>
           </nav>
           <div className="sheet-contact">
             <a href={`tel:${CONTACT.phones[0].replace(/\s/g, '')}`}>{CONTACT.phones[0]}</a>

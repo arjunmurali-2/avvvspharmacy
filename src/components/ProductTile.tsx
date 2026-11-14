@@ -9,6 +9,7 @@ import { formByType } from '@/lib/site';
 import { HeartIcon } from './Icons';
 import { medicineName } from '@/content/medicines';
 import { useStore } from './StoreProvider';
+import { fitted } from '@/lib/shopify/image';
 
 export const itemOf = (p: Pick<ProductCard, 'title' | 'productType' | 'priceRange' | 'handle'> & { variants?: ProductCard['variants']; id: string }) => ({
   id: p.variants?.nodes[0]?.id ?? p.id,
@@ -68,7 +69,7 @@ export function ProductTile({ product, priority }: { product: ProductCard; prior
       <Link href={`/products/${product.handle}`} className="tile-link" prefetch={false}>
         <div className="tile-media">
           {product.featuredImage ? (
-            <Image src={product.featuredImage.url} alt={product.featuredImage.altText || name} fill
+            <Image src={fitted(product.featuredImage.url)} alt={product.featuredImage.altText || name} fill
               sizes="(max-width: 680px) 46vw, (max-width: 1100px) 30vw, 280px" priority={priority} />
           ) : <span className="tile-noimg" aria-hidden="true">{name.charAt(0)}</span>}
         </div>

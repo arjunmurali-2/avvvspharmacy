@@ -43,14 +43,14 @@ export default async function SearchPage({ searchParams }: Props) {
         <HeroSearch />
         {sym && sym.concerns.length > 0 && (
           <nav className="tags" aria-label="Matching concerns">
-            {sym.concerns.map((c) => <Link key={c.slug} href={`/concerns/${c.slug}`}>Shop by concern: {c.name} →</Link>)}
+            {sym.concerns.map((c) => <Link key={c.slug} href={`/concerns/${c.slug}`}>Shop by concern: {c.name}</Link>)}
           </nav>
         )}
       </header>
       {page ? (
         <Listing key={q} name={`Search: ${q}`} initial={page} filters={page.filters} listing={listing} source={{ kind: 'search', term: q }} showForms
           sorts={[{ value: 'featured', label: 'Best match' }, { value: 'price-asc', label: 'Price, low to high' }, { value: 'price-desc', label: 'Price, high to low' }]}
-          emptyNote={<p className="muted">Ayurveda names are spelled many ways (Dhanwantharam, Dhanvantaram). Try a shorter part of the name, or look it up in the A–Z list.</p>} />
+          emptyNote={<p className="muted">Ayurveda names are spelled many ways (Dhanwantharam, Dhanvantaram). Try a shorter part of the name, or look it up in the A to Z list.</p>} />
       ) : (
         <div className="empty" style={{ paddingBottom: 100 }}>
           <p className="muted">Type a medicine name above, or browse by form:</p>

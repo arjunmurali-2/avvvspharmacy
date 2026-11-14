@@ -44,7 +44,7 @@ const COLLECTION = `fragment Coll on Collection { id handle title description de
 export type Sort = 'featured' | 'name' | 'price-asc' | 'price-desc' | 'newest';
 export const SORTS: { value: Sort; label: string }[] = [
   { value: 'featured', label: 'Featured' },
-  { value: 'name', label: 'Name, A–Z' },
+  { value: 'name', label: 'Name, A to Z' },
   { value: 'price-asc', label: 'Price, low to high' },
   { value: 'price-desc', label: 'Price, high to low' },
   { value: 'newest', label: 'Newest' },
@@ -155,7 +155,7 @@ function productQueryString(l: Listing, extra?: string) {
   return parts.join(' AND ') || null;
 }
 
-/** Products by query (form pages, A–Z): the root products connection, which takes search syntax. */
+/** Products by query (form pages, A to Z): the root products connection, which takes search syntax. */
 export async function getProducts(l: Listing = {}, extra?: string): Promise<ProductPage> {
   const q = `${IMAGE}${CARD}
   query Products($first: Int!, $after: String, $query: String, $sortKey: ProductSortKeys, $reverse: Boolean) {
@@ -172,7 +172,7 @@ export async function getProducts(l: Listing = {}, extra?: string): Promise<Prod
   return { products: d.products.nodes, pageInfo: d.products.pageInfo!, filters: [] };
 }
 
-/** Every product, for the A–Z index and the sitemap (the store has a few hundred at most). */
+/** Every product, for the A to Z index and the sitemap (the store has a few hundred at most). */
 export async function getAllProducts(): Promise<ProductCard[]> {
   const all: ProductCard[] = [];
   let after: string | null = null;

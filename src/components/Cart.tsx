@@ -11,6 +11,7 @@ import { checkoutTracking, trackBeginCheckout, trackViewCart, type Item } from '
 import { CloseIcon, RxIcon, UploadIcon } from './Icons';
 import { useStore } from './StoreProvider';
 import { medicineName } from '@/content/medicines';
+import { fitted } from '@/lib/shopify/image';
 
 const items = (cart: Cart): Item[] => cart.lines.nodes.map((l) => ({
   id: l.merchandise.id, name: medicineName(l.merchandise.product.handle, l.merchandise.product.title), price: amount(l.cost.amountPerQuantity), quantity: l.quantity,
@@ -41,13 +42,13 @@ function Line({ line, onNavigate }: { line: CartLine; onNavigate?: () => void })
   return (
     <li className={`line${busy ? ' is-busy' : ''}`}>
       <Link href={`/products/${p.product.handle}`} className="line-img" onClick={onNavigate} tabIndex={-1} aria-hidden="true">
-        {p.image ? <Image src={p.image.url} alt="" width={76} height={76} /> : null}
+        {p.image ? <Image src={fitted(p.image.url)} alt="" width={76} height={76} /> : null}
       </Link>
       <div>
         <Link href={`/products/${p.product.handle}`} className="line-title" onClick={onNavigate}>{name}</Link>
         <p className="line-meta">
           {formByType(p.product.productType)?.name ?? titleCase(p.product.productType)}
-          {p.title !== 'Default Title' ? ` · ${p.title}` : ''} · {money(line.cost.amountPerQuantity, { compact: true })} each
+          {p.title !== 'Default Title' ? `, ${p.title}` : ''}, {money(line.cost.amountPerQuantity, { compact: true })} each
         </p>
         {!p.availableForSale && <p className="line-meta msg-error">No longer in stock. Remove it to check out.</p>}
         <div className="line-actions">
@@ -229,7 +230,7 @@ export function EmptyCart({ onNavigate }: { onNavigate?: () => void }) {
     <div className="empty">
       <h3>Your cart is empty</h3>
       <p className="muted">Find a medicine by name, by form, or by concern.</p>
-      <Link href="/medicines" className="btn" onClick={onNavigate}>Browse medicines A–Z</Link>
+      <Link href="/medicines" className="btn" onClick={onNavigate}>Browse medicines A to Z</Link>
       <Link href="/concerns" className="link" onClick={onNavigate}>Shop by concern</Link>
     </div>
   );

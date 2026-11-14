@@ -11,6 +11,7 @@ import { Qty } from './Cart';
 import { PrintIcon, ShieldIcon, LeafIcon, TruckIcon, RxIcon } from './Icons';
 import { WishButton, itemOf } from './ProductTile';
 import { useStore } from './StoreProvider';
+import { fitted } from '@/lib/shopify/image';
 
 export function Gallery({ images, name }: { images: Img[]; name: string }) {
   const [i, setI] = useState(0);
@@ -24,14 +25,14 @@ export function Gallery({ images, name }: { images: Img[]; name: string }) {
         onClick={() => setZoom((z) => !z)}
         onMouseMove={(e) => { const r = e.currentTarget.getBoundingClientRect(); setOrigin(`${((e.clientX - r.left) / r.width) * 100}% ${((e.clientY - r.top) / r.height) * 100}%`); }}
         onMouseLeave={() => setZoom(false)} style={{ padding: 0 }}>
-        <Image src={img.url} alt={img.altText || name} fill priority sizes="(max-width: 900px) 100vw, 50vw" style={{ transformOrigin: origin }} />
+        <Image src={fitted(img.url)} alt={img.altText || name} fill priority sizes="(max-width: 900px) 100vw, 50vw" style={{ transformOrigin: origin }} />
       </button>
       {images.length > 1 && (
         <ul className="thumbs" aria-label="Product photos">
           {images.map((im, n) => (
             <li key={im.url}>
               <button type="button" aria-current={n === i} aria-label={`Photo ${n + 1} of ${images.length}`} onClick={() => { setI(n); setZoom(false); }}>
-                <Image src={im.url} alt="" width={74} height={74} />
+                <Image src={fitted(im.url)} alt="" width={74} height={74} />
               </button>
             </li>
           ))}
@@ -62,7 +63,7 @@ function Notify({ product }: { product: Product }) {
         <button type="submit" className="btn-quiet" disabled={state === 'sending'}>{state === 'sending' ? 'Sending…' : 'Notify me'}</button>
       </div>
       {state === 'error' && <p className="msg msg-error" role="alert">{msg}</p>}
-      <p className="fine">Or ask the pharmacy: <a href={`https://wa.me/${CONTACT.whatsapp}?text=${encodeURIComponent(`Hello, is ${titleCase(product.title)} available?`)}`} rel="noopener">WhatsApp</a> · <a href={`tel:${CONTACT.phones[0].replace(/\s/g, '')}`}>{CONTACT.phones[0]}</a></p>
+      <p className="fine">Or ask the pharmacy: <a href={`https://wa.me/${CONTACT.whatsapp}?text=${encodeURIComponent(`Hello, is ${titleCase(product.title)} available?`)}`} rel="noopener">WhatsApp</a>, or call <a href={`tel:${CONTACT.phones[0].replace(/\s/g, '')}`}>{CONTACT.phones[0]}</a></p>
     </form>
   );
 }
@@ -158,7 +159,7 @@ export function BuyBox({ product, hasAlternatives }: { product: Product; hasAlte
         ) : (
           <div style={{ display: 'grid', gap: 14 }}>
             <Notify product={product} />
-            {hasAlternatives && <a className="link" href="#alternatives">See in-stock medicines for similar uses ↓</a>}
+            {hasAlternatives && <a className="link" href="#alternatives">See in-stock medicines for similar uses</a>}
             <WishButton product={product} inline />
           </div>
         )}

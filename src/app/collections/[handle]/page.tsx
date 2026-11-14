@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { GlovedaBanner } from '@/components/Gloveda';
 import { notFound, redirect } from 'next/navigation';
 import { getCollectionPage, listingFromParams } from '@/lib/shopify/catalog';
 import { COLLECTIONS, CONCERN_PREFIX, FORMS, breadcrumbLd } from '@/lib/site';
@@ -46,6 +47,7 @@ export default async function CollectionPage({ params, searchParams }: Props) {
         )}
       </header>
       <Listing name={name} initial={r.page} filters={r.page.filters} listing={listing} source={{ kind: 'collection', handle }} showForms />
+      {handle === 'cosmetics' && <div className="section"><GlovedaBanner /></div>}
       <JsonLd data={breadcrumbLd([{ name, path: `/collections/${handle}` }])} />
     </div>
   );

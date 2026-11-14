@@ -8,6 +8,7 @@ import { money } from '@/lib/format';
 import { medicineName } from '@/content/medicines';
 import { itemOf } from './ProductTile';
 import { useStore } from './StoreProvider';
+import { fitted } from '@/lib/shopify/image';
 
 type KitView = { handle: string; title: string; description: string; products: ProductCard[] };
 
@@ -26,7 +27,7 @@ export function AddKit({ products, label = 'Add the kit to cart' }: { products: 
       openDrawer();
       if (skipped) toast({ text: `${skipped} item${skipped === 1 ? ' is' : 's are'} out of stock and ${skipped === 1 ? 'was' : 'were'} left out.` });
     }}>
-      {busy ? 'Adding…' : label} <span className="arr" aria-hidden="true">→</span>
+      {busy ? 'Adding…' : label}
     </button>
   );
 }
@@ -38,12 +39,12 @@ export function KitCard({ kit }: { kit: KitView }) {
     <article className="kit" data-anim>
       <div className="kit-shots" aria-hidden="true">
         {kit.products.slice(0, 4).map((p) => (
-          <span key={p.id}>{p.featuredImage && <Image src={p.featuredImage.url} alt="" fill sizes="120px" />}</span>
+          <span key={p.id}>{p.featuredImage && <Image src={fitted(p.featuredImage.url)} alt="" fill sizes="120px" />}</span>
         ))}
       </div>
       <div className="kit-body">
-        <p className="eyebrow">Care kit · {kit.products.length} medicines</p>
         <h3><Link href={`/collections/${kit.handle}`}>{kit.title}</Link></h3>
+        <p className="line-meta">A care kit of {kit.products.length} medicines</p>
         {kit.description && <p className="muted">{kit.description}</p>}
         <ul className="kit-list">
           {kit.products.map((p) => (

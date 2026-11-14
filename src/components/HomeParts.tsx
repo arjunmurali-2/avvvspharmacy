@@ -37,7 +37,7 @@ export function RecentlyViewed({ skip, title = 'Recently viewed' }: { skip?: str
   if (!cards?.length) return null;
   return (
     <section className="section wrap" aria-labelledby="recent-h" style={{ paddingTop: 0 }}>
-      <div className="section-head" data-anim><div><p className="eyebrow">Pick up where you left off</p><h2 id="recent-h">{title}</h2></div></div>
+      <div className="section-head" data-anim><div><h2 id="recent-h">{title}</h2></div></div>
       <ProductGrid products={cards.slice(0, 4)} className="grid grid-4" />
     </section>
   );

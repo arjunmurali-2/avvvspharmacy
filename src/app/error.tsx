@@ -8,7 +8,6 @@ export default function ErrorPage({ error, reset }: { error: Error & { digest?: 
   return (
     <div className="wrap">
       <div className="empty" style={{ padding: '90px 0 120px' }}>
-        <p className="eyebrow">Something went wrong</p>
         <h1>The pharmacy didn’t answer in time</h1>
         <p className="muted">This is usually brief. Please try again; your cart is safe.</p>
         <div className="hero-actions"><button type="button" className="btn" onClick={reset}>Try again</button><Link className="btn-quiet" href="/">Store home</Link></div>

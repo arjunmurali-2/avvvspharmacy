@@ -26,9 +26,7 @@ export default async function Concerns() {
         {CONCERNS.map((c, i) => (
           <li key={c.slug}>
             <Link href={`/concerns/${c.slug}`}>
-              <span className="n">{String(i + 1).padStart(2, '0')}</span>
               <b>{c.name}</b>
-              <span className="go" aria-hidden="true">→</span>
               <small>{c.note}</small>
               <span className="soon">{counts[c.slug] ? `${counts[c.slug]} medicine${counts[c.slug] === 1 ? '' : 's'}` : 'Being prepared by our pharmacists'}</span>
             </Link>

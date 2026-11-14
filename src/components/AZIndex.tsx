@@ -55,7 +55,7 @@ export function AZIndex({ rows }: { rows: Row[] }) {
               {list.map((r) => (
                 <li key={r.handle} className={r.available ? undefined : 'is-out'}>
                   <Link href={`/products/${r.handle}`} prefetch={false}>{r.title}</Link>
-                  <small>{formByType(r.type)?.name ?? titleCase(r.type)} · {r.available ? money(r.price, { compact: true }) : 'out of stock'}</small>
+                  <small>{formByType(r.type)?.name ?? titleCase(r.type)}, {r.available ? money(r.price, { compact: true }) : 'out of stock'}</small>
                 </li>
               ))}
             </ul>

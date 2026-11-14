@@ -83,8 +83,8 @@ export default async function ProductPage({ params }: Props) {
 
         <div className="buy" data-anim>
           <div className="buy-title">
-            {form && <Link className="eyebrow" href={`/shop/${form.slug}`} style={{ textDecoration: 'none' }}>{form.name} · {form.note}</Link>}
             <h1>{name}</h1>
+            {form && <p className="buy-kind"><Link className="link-quiet" href={`/shop/${form.slug}`}>{form.name}, {form.note.toLowerCase()}</Link></p>}
             {(med.malayalam || med.sanskrit || form?.ml) && (
               <p className="buy-names">
                 {med.malayalam && <span lang="ml">{med.malayalam}</span>}
@@ -99,7 +99,7 @@ export default async function ProductPage({ params }: Props) {
             <div className="caution" role="note">
               <b>Best taken on a doctor’s advice.</b>
               <p>AVVVS recommends a consultation before using this medicine. You can attach a prescription to your cart if you have one.</p>
-              <a className="link" href={CONTACT.clinic} rel="noopener">Consult a doctor ↗</a>
+              <a className="link" href={CONTACT.clinic} rel="noopener">Consult a doctor</a>
             </div>
           )}
 
@@ -108,7 +108,7 @@ export default async function ProductPage({ params }: Props) {
               <p className="about-lede">{content.summary}</p>
               {content.uses.length > 0 ? (
                 <>
-                  <p className="eyebrow">Traditionally used for</p>
+                  <p className="label">Traditionally used for</p>
                   <ul className="uses">{content.uses.map((u) => <li key={u}>{u}</li>)}</ul>
                 </>
               ) : (
@@ -157,7 +157,7 @@ export default async function ProductPage({ params }: Props) {
 
           {concerns.length > 0 && (
             <div style={{ display: 'grid', gap: 10 }}>
-              <p className="eyebrow">Listed under</p>
+              <p className="label">Listed under</p>
               <div className="tags">{concerns.map((c) => <Link key={c.slug} href={`/concerns/${c.slug}`}>{c.name}</Link>)}</div>
             </div>
           )}
@@ -172,7 +172,7 @@ export default async function ProductPage({ params }: Props) {
         </div>
         <div className="assist-actions">
           <a className="btn" href={`https://wa.me/${CONTACT.whatsapp}`} rel="noopener">WhatsApp the pharmacy</a>
-          <a className="btn-quiet" href={CONTACT.clinic} rel="noopener">Consult a doctor ↗</a>
+          <a className="btn-quiet" href={CONTACT.clinic} rel="noopener">Consult a doctor</a>
         </div>
       </aside>
 
@@ -180,7 +180,6 @@ export default async function ProductPage({ params }: Props) {
         <section className="section" id="alternatives" aria-labelledby="alt-h" style={{ paddingTop: 0 }}>
           <div className="section-head" data-anim>
             <div>
-              <p className="eyebrow">In stock now</p>
               <h2 id="alt-h">For similar traditional uses</h2>
             </div>
             <p className="fine" style={{ maxWidth: '30rem' }}>These are listed under the same concerns as {name}. They are not substitutes: please ask your doctor or our pharmacist before switching medicines.</p>
@@ -191,15 +190,15 @@ export default async function ProductPage({ params }: Props) {
 
       {related.length > 0 && (
         <section className="section" aria-labelledby="rel-h" style={{ paddingTop: 0 }}>
-          <div className="section-head" data-anim><div><p className="eyebrow">Related</p><h2 id="rel-h">Often viewed with {name}</h2></div></div>
+          <div className="section-head" data-anim><div><h2 id="rel-h">Often viewed with {name}</h2></div></div>
           <ProductGrid products={related.slice(0, 4)} className="grid grid-4" />
         </section>
       )}
       {more.length > 0 && form && (
         <section className="section" aria-labelledby="more-h" style={{ paddingTop: 0 }}>
           <div className="section-head" data-anim>
-            <div><p className="eyebrow">{form.note}</p><h2 id="more-h">More {form.name.toLowerCase()}</h2></div>
-            <Link className="link" href={`/shop/${form.slug}`}>See all →</Link>
+            <div><h2 id="more-h">More {form.name.toLowerCase()}</h2></div>
+            <Link className="link" href={`/shop/${form.slug}`}>See all</Link>
           </div>
           <ProductGrid products={more} className="grid grid-4" />
         </section>

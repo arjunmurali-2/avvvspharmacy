@@ -8,13 +8,13 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "tag-concerns": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/tag-concerns.mts",
+    "image-trim": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/image-trim.mts",
     "content-review": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/content-review.mts",
     "test:e2e": "playwright test"
   },
   "dependencies": {
     "@neondatabase/serverless": "1.2.0",
     "@vercel/blob": "2.8.2",
-    "animejs": "4.5.0",
     "lenis": "1.3.27",
     "next": "15.5.29",
     "nodemailer": "10.2.1",
