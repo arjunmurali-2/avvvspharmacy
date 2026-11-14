@@ -161,7 +161,9 @@ These live entirely in Shopify's checkout. The store sends the cart there and ne
 | `shop.avvvs.com` | This store | Vercel |
 | `checkout.avvvs.com` | Shopify's checkout, and the shop's primary domain in Shopify | `shops.myshopify.com` |
 | `account.avvvs.com` | Shopify's customer sign-in and order pages. Connected, but not yet set as the primary customer accounts domain (Settings → Domains → `account.avvvs.com` → Change → Primary domain); until then sign-in uses `shopify.com/68371579177/account` | `shops.myshopify.com` |
-| `avvvsglobal.com` | The old shop address; redirects to `checkout.avvvs.com` | Shopify |
+| `avvvsglobal.com` | The old shop address; redirects to `checkout.avvvs.com`, whose theme then sends visitors on to `shop.avvvs.com` | Shopify |
+
+**Old storefront redirect.** The live Shopify theme (`Oworganic-home1-2.0`, `layout/theme.liquid`, just inside `<head>`) carries a short script that sends storefront visitors to the same page on `shop.avvvs.com`: products, collections, pages, cart and search keep their path, everything else goes to the home page. Checkout, accounts, policies and Shopify's own service paths are left alone. To undo it, delete that line in **Online Store → Themes → Edit code**, or restore the earlier version of the file there.
 
 The checkout's colours are set in **Settings → Checkout → Customize** to match this store (`#F4EFE5` background, `#06619B` accent and buttons).
 
