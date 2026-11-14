@@ -35,7 +35,7 @@ Without these, the sign-in link shows a "coming soon" message and everything els
 | Variable | Where | Value / where to get it | Secret? |
 |---|---|---|---|
 | `SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_ID` | Vercel + local | **Headless** → your storefront → **Customer Account API** → *Client ID* | No |
-| `SHOPIFY_CUSTOMER_ACCOUNT_DOMAIN` | Vercel + local | `avvvsglobal.com` (the shop's primary domain) | No |
+| `SHOPIFY_CUSTOMER_ACCOUNT_DOMAIN` | Vercel + local | `checkout.avvvs.com` (the shop's primary domain in Shopify, where checkout runs) | No |
 | `SESSION_SECRET` | Vercel + local | 32+ random characters. Make one with `openssl rand -base64 32`. Encrypts the sign-in cookie; changing it signs everyone out. | **Yes** |
 | `NEXT_PUBLIC_SITE_URL` | Vercel + local | `https://shop.avvvs.com` on Vercel. Locally: `http://localhost:3001`, or your ngrok address when testing sign-in. Also used for canonical links, the sitemap and share links. | No |
 
@@ -115,7 +115,7 @@ SHOPIFY_API_VERSION=2026-10
 SHOPIFY_STOREFRONT_PUBLIC_TOKEN=
 SHOPIFY_STOREFRONT_PRIVATE_TOKEN=
 SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_ID=
-SHOPIFY_CUSTOMER_ACCOUNT_DOMAIN=avvvsglobal.com
+SHOPIFY_CUSTOMER_ACCOUNT_DOMAIN=checkout.avvvs.com
 SESSION_SECRET=
 NEXT_PUBLIC_SITE_URL=https://shop.avvvs.com
 SHOPIFY_REVALIDATE_SECRET=

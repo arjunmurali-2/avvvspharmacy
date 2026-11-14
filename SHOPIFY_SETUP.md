@@ -32,7 +32,7 @@ Put every value in `store/.env.local` for local work, and in the Vercel project'
 
 ## 2. Customer accounts (Customer Account API)
 
-> **Do this first; checkout is blocked until you do.** The live store currently requires shoppers to log in to a *classic* account (email and password) before checkout. When tested, the store's checkout button landed on `avvvsglobal.com/account/login` instead of checkout. In **Settings → Customer accounts**, set sign-in to **optional** (not required) so guests can check out.
+> **Guest checkout works.** The shop uses the new passwordless customer accounts, and *Require customers to sign in before checkout* (Settings → Checkout) is off, so a cart from this store opens Shopify's checkout directly. Checked on 14 November 2026.
 
 1. Go to **Settings → Customer accounts** and choose **Customer accounts** (the new, passwordless type).
 2. In **Headless → your storefront → Customer Account API → Application setup**:
@@ -42,7 +42,7 @@ Put every value in `store/.env.local` for local work, and in the Vercel project'
    - **Logout URI:** `https://shop.avvvs.com`
 3. Copy the **Client ID** into `SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_ID`.
 4. Set `SESSION_SECRET` to 32 or more random characters (`openssl rand -base64 32`).
-5. `SHOPIFY_CUSTOMER_ACCOUNT_DOMAIN` stays `avvvsglobal.com`. It is the shop's primary domain, where the sign-in discovery documents live.
+5. `SHOPIFY_CUSTOMER_ACCOUNT_DOMAIN` is `checkout.avvvs.com`. It is the shop's primary domain in Shopify, where the sign-in discovery documents live.
 
 Shopify does not allow `localhost` callbacks. To test sign-in on your own machine, run a tunnel (`ngrok http 3001`) and do two things:
 - add the tunnel's HTTPS address as a second callback and origin in Shopify
@@ -153,6 +153,17 @@ These live entirely in Shopify's checkout. The store sends the cart there and ne
 - payment providers (e.g. Razorpay or PayU for UPI, and COD)
 - shipping zones and rates
 - GST
+
+## 7b. Addresses
+
+| Address | What it is | Where it points |
+|---|---|---|
+| `shop.avvvs.com` | This store | Vercel |
+| `checkout.avvvs.com` | Shopify's checkout, and the shop's primary domain in Shopify | `shops.myshopify.com` |
+| `account.avvvs.com` | Shopify's customer sign-in and order pages. Connected, but not yet set as the primary customer accounts domain (Settings → Domains → `account.avvvs.com` → Change → Primary domain); until then sign-in uses `shopify.com/68371579177/account` | `shops.myshopify.com` |
+| `avvvsglobal.com` | The old shop address; redirects to `checkout.avvvs.com` | Shopify |
+
+The checkout's colours are set in **Settings → Checkout → Customize** to match this store (`#F4EFE5` background, `#06619B` accent and buttons).
 
 ## 8. Domain and deploy
 

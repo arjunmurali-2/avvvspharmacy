@@ -14,7 +14,7 @@ export async function middleware(req: NextRequest) {
   if (!s.refresh) { const r = NextResponse.next(); r.cookies.delete(SESSION_COOKIE); r.cookies.delete(FLAG_COOKIE); return r; }
 
   try {
-    const domain = process.env.SHOPIFY_CUSTOMER_ACCOUNT_DOMAIN || 'avvvsglobal.com';
+    const domain = process.env.SHOPIFY_CUSTOMER_ACCOUNT_DOMAIN || 'checkout.avvvs.com';
     const site = (process.env.NEXT_PUBLIC_SITE_URL || 'https://shop.avvvs.com').replace(/\/$/, '');
     const oidc = await fetch(`https://${domain}/.well-known/openid-configuration`).then((r) => r.json());
     const res = await fetch(oidc.token_endpoint, {

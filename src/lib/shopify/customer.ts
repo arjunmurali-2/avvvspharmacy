@@ -9,7 +9,7 @@ import { SITE_URL } from '../site';
  */
 
 export const CLIENT_ID = process.env.SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_ID?.trim() || '';
-const ACCOUNT_DOMAIN = process.env.SHOPIFY_CUSTOMER_ACCOUNT_DOMAIN || 'avvvsglobal.com';
+const ACCOUNT_DOMAIN = process.env.SHOPIFY_CUSTOMER_ACCOUNT_DOMAIN || 'checkout.avvvs.com';
 const VERSION = process.env.SHOPIFY_API_VERSION || '2026-10';
 export const ACCOUNTS_ENABLED = !!CLIENT_ID && !!process.env.SESSION_SECRET;
 export const REDIRECT_URI = `${SITE_URL}/account/callback`;
