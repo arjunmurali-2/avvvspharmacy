@@ -133,10 +133,11 @@ The word list lives in `src/content/synonyms.ts`. It can only surface uses alrea
 
 Pages refresh from Shopify every 5 minutes on their own. For instant updates, add webhooks so edits show at once:
 1. Go to **Settings → Notifications → Webhooks**.
-2. Create the following webhooks, each in JSON format and each pointing at `https://shop.avvvs.com/api/revalidate?secret=<SHOPIFY_REVALIDATE_SECRET>`:
+2. Copy the **Signing secret** shown on that page into `SHOPIFY_WEBHOOK_SECRET` (Vercel), and redeploy. The store checks each webhook's signature against it, so the webhook address carries no secret.
+3. Create the following webhooks, each in JSON format and each pointing at `https://shop.avvvs.com/api/revalidate`:
    - Product creation, Product update, Product deletion
    - Collection creation, Collection update, Collection deletion
-3. Set `SHOPIFY_REVALIDATE_SECRET` to a long random string.
+4. Optional: set `SHOPIFY_REVALIDATE_SECRET` to a long random string to be able to refresh by hand with `/api/revalidate?secret=<it>`.
 
 ## 6. Prescriptions, stock alerts, mail
 

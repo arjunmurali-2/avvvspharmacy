@@ -45,9 +45,10 @@ In Shopify, set the callback to `https://shop.avvvs.com/account/callback`, the J
 
 | Variable | Where | Value / where to get it | Secret? |
 |---|---|---|---|
-| `SHOPIFY_REVALIDATE_SECRET` | Vercel | Any long random string you make up. Put the same string at the end of each Shopify webhook URL: `https://shop.avvvs.com/api/revalidate?secret=<this>` | **Yes** |
+| `SHOPIFY_WEBHOOK_SECRET` | Vercel | Shopify admin → **Settings → Notifications → Webhooks** → *Signing secret* (copy icon). The store checks every webhook's signature against it. | **Yes** |
+| `SHOPIFY_REVALIDATE_SECRET` | Vercel | Optional. Any long random string you make up; lets you refresh the catalogue by hand with a POST to `https://shop.avvvs.com/api/revalidate?secret=<this>`. | **Yes** |
 
-Without it, pages still refresh from Shopify every 5 minutes. Webhook list: `SHOPIFY_SETUP.md` §5.
+Without them, pages still refresh from Shopify every 5 minutes. Webhook list: `SHOPIFY_SETUP.md` §5.
 
 ## 4. Prescription uploads (optional)
 
@@ -118,6 +119,7 @@ SHOPIFY_CUSTOMER_ACCOUNT_CLIENT_ID=
 SHOPIFY_CUSTOMER_ACCOUNT_DOMAIN=checkout.avvvs.com
 SESSION_SECRET=
 NEXT_PUBLIC_SITE_URL=https://shop.avvvs.com
+SHOPIFY_WEBHOOK_SECRET=
 SHOPIFY_REVALIDATE_SECRET=
 ```
 
