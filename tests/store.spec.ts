@@ -60,8 +60,8 @@ test('checkout hands over to Shopify (stops before paying)', async ({ page }) =>
   await expect(drawer.locator('.line')).toHaveCount(1);
 
   // catch the navigation to Shopify instead of following it
-  const shopify = page.waitForRequest((r) => r.isNavigationRequest() && /avvvsglobal\.(com|myshopify\.com)/.test(r.url()));
-  await page.route(/avvvsglobal\.(com|myshopify\.com)/, (route) => route.fulfill({ status: 200, body: 'checkout reached' }));
+  const shopify = page.waitForRequest((r) => r.isNavigationRequest() && /(checkout\.avvvs\.com|avvvsglobal\.(com|myshopify\.com))/.test(r.url()));
+  await page.route(/(checkout\.avvvs\.com|avvvsglobal\.(com|myshopify\.com))/, (route) => route.fulfill({ status: 200, body: 'checkout reached' }));
   await drawer.getByRole('button', { name: 'Checkout securely' }).click();
   const req = await shopify;
   expect(req.url()).toMatch(/\/(cart\/c|checkouts?)\//);
