@@ -14,6 +14,7 @@ import { ProductGrid } from '@/components/ProductTile';
 import { BuyBox, Gallery, ProductTracker } from '@/components/ProductView';
 import type { ProductCard } from '@/lib/shopify/types';
 import { RecentlyViewed } from '@/components/HomeParts';
+import { ChatIcon } from '@/components/Icons';
 
 type Props = { params: Promise<{ handle: string }> };
 export const revalidate = 300;
@@ -162,6 +163,18 @@ export default async function ProductPage({ params }: Props) {
           )}
         </div>
       </div>
+
+      <aside className="assist section-deep" aria-labelledby="assist-h" data-anim>
+        <span className="svc-ico"><ChatIcon /></span>
+        <div>
+          <h2 id="assist-h">Not sure this is the right medicine?</h2>
+          <p>Ask our pharmacist about {name}, or consult an AVVVS doctor before you order.</p>
+        </div>
+        <div className="assist-actions">
+          <a className="btn" href={`https://wa.me/${CONTACT.whatsapp}`} rel="noopener">WhatsApp the pharmacy</a>
+          <a className="btn-quiet" href={CONTACT.clinic} rel="noopener">Consult a doctor ↗</a>
+        </div>
+      </aside>
 
       {alternatives.length > 0 && (
         <section className="section" id="alternatives" aria-labelledby="alt-h" style={{ paddingTop: 0 }}>

@@ -6,6 +6,7 @@ import { getRecsFor } from '@/app/cart/recs';
 import type { ProductCard } from '@/lib/shopify/types';
 import { CONTACT } from '@/lib/site';
 import { CartExtras, CartLines, CheckoutButton, EmptyCart, PrescriptionUpload, Totals } from './Cart';
+import { RxIcon, ShieldIcon, TruckIcon } from './Icons';
 import { ProductGrid } from './ProductTile';
 import { useStore } from './StoreProvider';
 
@@ -33,6 +34,11 @@ export function CartPageView() {
           <CartExtras cart={cart} />
           <Totals cart={cart} />
           <CheckoutButton cart={cart} />
+          <ul className="assure assure-1">
+            <li><ShieldIcon />Secure checkout by Shopify</li>
+            <li><RxIcon />Our pharmacist checks any prescription you attach</li>
+            <li><TruckIcon />Delivery options and charges shown at checkout</li>
+          </ul>
           {!signedIn && <p className="fine"><Link href="/account/login?next=/cart" prefetch={false}>Sign in</Link> to see past orders and reorder in one click. You can also check out as a guest.</p>}
           <p className="fine">Questions before you order? <a href={`https://wa.me/${CONTACT.whatsapp}`} rel="noopener">WhatsApp the pharmacy</a> or call {CONTACT.phones[0]}.</p>
         </aside>

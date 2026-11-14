@@ -123,13 +123,16 @@ export function BuyBox({ product, hasAlternatives }: { product: Product; hasAlte
 
   return (
     <>
-      <div className="buy-price">
-        <strong>{money(v.price)}</strong>
-        {was && <><s>MRP {money(was)}</s><span className="save">Save {pct}%</span></>}
+      <div className="buy-card">
+      <div className="buy-top">
+        <div className="buy-price">
+          <strong>{money(v.price)}</strong>
+          {was && <><s>MRP {money(was)}</s><span className="save">Save {pct}%</span></>}
+        </div>
+        <p className={`stock${!v.availableForSale ? ' is-out' : low ? ' is-low' : ''}`}>
+          {!v.availableForSale ? 'Out of stock' : low ? `In stock: only ${v.quantityAvailable} left` : 'In stock, ready to ship'}
+        </p>
       </div>
-      <p className={`stock${!v.availableForSale ? ' is-out' : low ? ' is-low' : ''}`}>
-        {!v.availableForSale ? 'Out of stock' : low ? `In stock: only ${v.quantityAvailable} left` : 'In stock, ready to ship'}
-      </p>
 
       {multi && (
         <div className="field">
@@ -167,6 +170,7 @@ export function BuyBox({ product, hasAlternatives }: { product: Product; hasAlte
         <li><RxIcon />Attach a prescription in your cart, if you have one</li>
         <li><TruckIcon />Delivery options and charges shown at checkout</li>
       </ul>
+      </div>
       <Share name={name} />
 
       <div className={`sticky-buy${stuck && v.availableForSale ? ' is-on' : ''}`} aria-hidden={!stuck}>
